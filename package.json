@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "description": "",
   "main": "litter-g.js",
+  "dependencies": {
+    "hyperhtml": "^2.13.0",
+    "lit-html": "^0.11.0",
+    "xtal-latx": "0.0.24"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

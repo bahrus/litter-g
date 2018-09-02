@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/hyperhtml@2.13.0/min.js"></script>
+</head>
+<body>
+    <div>
+        <script type="module" src="../litter-g.js"></script>
+        <litter-g></litter-g>
+        <script nomodule>
+            const litterG = ({arithmetic, b, c}) => `
+                ${arithmetic}
+            `
+        </script>
+        <div data-litter-g>
+            
+        </div>
+        
+    </div>
+</body>
+</html>

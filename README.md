@@ -18,6 +18,8 @@ And these great libraries, with the help of decorators and such, make defining s
 
 Only, as simple as this may seem, it still seems like overkill if your dynamically rendered view doesn't need to manage any particular state.  It's far more complicated than what users are used to when they stimply start typing ng-repeat, or v-for, etc.
 
+That was the mission of xtal-method, and is the mission of litter-g as well, only litter-g chooses to be tightly aligned with one particular such library -- lit-html.  In this way, we can eliminate even more boilerplate than xtal-method allows.
+
 ## Syntax
 
 The litter-g web component only affects things that happen within its ShadowDOM realm.  Or, if you place it outside any ShadowDOM, it only affects things outside any ShadowDOM.
@@ -25,9 +27,15 @@ The litter-g web component only affects things that happen within its ShadowDOM 
 ```html
 <litter-g></litter-g>
 ...
-
-<div data-litter-g>
-    <script nomodule>
+<ul>
+<div data-litter-g input='["He", "She", "They", "Ze"]'>
+    <script nomodule >
+        html`${repeat(input, item => Math.random().toString(), (item, idx) => 
+            html`
+                <li id="${idx}">${item}</li>
+            `
+        )}`
     </script>
 </div>
+</ul>
 ```

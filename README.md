@@ -41,7 +41,6 @@ litter-g attaches a lit renderer property to any DOM element in its ShadowDOM re
                 </script>
         </ul>
         <script type="module" src="https://unpkg.com/litter-g@0.0.5/litter-g.js?module"></script>
-        <script src="https://unpkg.com/xtal-decorator@0.0.20/xtal-decorator.iife.js"></script>
     </div>
   </template>
 </custom-element-demo>

@@ -9,6 +9,18 @@
     }
     customElements.define(tagName, custEl);
 }
+function getHost(el) {
+    let parent = el;
+    while (parent = (parent.parentNode)) {
+        if (parent.nodeType === 11) {
+            return parent['host'];
+        }
+        else if (parent.tagName === 'BODY') {
+            return null;
+        }
+    }
+    return null;
+}
 function observeCssSelector(superClass) {
     const eventNames = ["animationstart", "MSAnimationStart", "webkitAnimationStart"];
     return class extends superClass {

@@ -1,0 +1,21 @@
+{
+  "sources":[
+    "litter-g.js",
+    "litter-g.iife.js"
+  ],
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  },
+  "builds":[
+    {
+      "name": "ES5",
+      "js": {"minify": false, "compile": true}
+    },
+    {
+      "name": "ES6",
+      "js": {"minify": true, "compile": false}
+    }    
+  ]
+}

@@ -74,3 +74,5 @@ Then in your litter-g tag, specify which constant to use for imports:
 ```
 
 As you can see, the "import" attribute should match the constant specified in document.head.  This will allow you to pick where the imports should come from.  
+
+This strategy may be revisited as package maps gains momentum.

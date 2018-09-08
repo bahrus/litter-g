@@ -1,0 +1,34 @@
+{
+  "entrypoint": "index.html",
+  "fragments": [],
+  "sources": [
+    "litter-g.js",
+    "litter-g.iife.js",
+    "index.html"
+  ],
+  "extraDependencies": [
+    "bower_components/webcomponentsjs/*.js"
+  ],
+  "builds": [
+    {
+      "name": "ES5",
+      "js": {
+        "minify": false,
+        "compile": true
+      }
+    },
+    {
+      "name": "ES6",
+      "js": {
+        "minify": true,
+        "compile": false
+      }
+    }
+  ],
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  },
+  "moduleResolution": "node"
+}

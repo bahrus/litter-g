@@ -86,7 +86,7 @@ litterG['fn_' + count] = function(input, target){
     onPropsChange() {
         if (!this._connected)
             return;
-        this.addCSSListener(LitterG.is, '[data-litter-g]', this.insertListener);
+        this.addCSSListener(LitterG.is, '[data-lit]', this.insertListener);
     }
 }
 LitterG._count = 0;

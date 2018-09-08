@@ -11,7 +11,7 @@
         <script type="module" src="../litter-g.js"></script>
         <litter-g></litter-g>
         
-        <ul data-litter-g>
+        <ul data-lit>
             <script nomodule>
                 html`${input.map((i) => html`<li>${i}</li>`)}`
             </script>
@@ -19,7 +19,7 @@
         
     </div>
     <script>
-        document.querySelector('[data-litter-g]').input = ["He", "She", "They", "Ze"];
+        document.querySelector('[data-lit]').input = ["He", "She", "They", "Ze"];
     </script>
 </body>
 </html>

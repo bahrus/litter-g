@@ -1,6 +1,10 @@
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/litter-g)
+
+<a href="https://nodei.co/npm/litter-g/"><img src="https://nodei.co/npm/litter-g.png"></a>
+
 # litter-g
 
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.7/build/ES6/litter-g.iife.js?compression=gzip">
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.8/build/ES6/litter-g.iife.js?compression=gzip">
 
 Use case:  litter-g hopes to improve the ergonomics of a similar component, [xtal-method](https://www.webcomponents.org/element/xtal-method).  Both components are meant for applications that aren't necessarily dominantly built on JavaScript-centric paradigm.  They may be built using a server-centric framework, which just wants to strategically shake some JavaScript pixie dust as needed.  Or maybe they are built using some "old" framework like Cold Fusion, but want to slowly convert into something more modern. 
 

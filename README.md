@@ -26,9 +26,9 @@ The litter-g web component only affects things that happen within its ShadowDOM 
 ```html
 <litter-g></litter-g>
 ...
-<ul data-litter-g input='["He", "She", "They", "Ze"]'>
-    <script nomodule >
-        html`items = ${items.map((i) => `<li>${i}</li>`)}`
+<ul data-litter-g>
+    <script nomodule>
+        html`${input.map((i) => html`<li>${i}</li>`)}`
     </script>
 </ul>
 ```

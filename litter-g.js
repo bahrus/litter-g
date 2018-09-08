@@ -20,7 +20,7 @@ export class LitterG extends observeCssSelector(HTMLElement) {
                 set: function (val) {
                     this['_' + prop] = val;
                     if (this.renderer && this.input)
-                        this.renderer(this.input);
+                        this.renderer(this.input, target);
                 },
                 enumerable: true,
                 configurable: true,
@@ -57,11 +57,10 @@ import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
 const litterG = customElements.get('litter-g');
 const count = litterG._count++;
 
-litterG['fn_' + count] = function(input){
+litterG['fn_' + count] = function(input, target){
     const litter = (name) => ${srcS.innerHTML};
 
-    // This renders <div>Hello Steve!</div> to the document body
-    render(litter(input), document.body);
+    render(litter(input), target);
     
 }
 `;

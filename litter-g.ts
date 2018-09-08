@@ -15,6 +15,19 @@ export class LitterG extends observeCssSelector(HTMLElement){
 
         }
     }
+    addInputProp(target: any){
+        const key = 'input';
+        Object.defineProperty(target, key, {
+            get: function () {
+                return this['_' + key];
+            },
+            set: function (val) {
+                this.dataset.litterG
+            },
+            enumerable: true,
+            configurable: true,
+        });
+    }
     registerScript(target: HTMLElement){
         if(!target.firstElementChild){
             setTimeout(() =>{

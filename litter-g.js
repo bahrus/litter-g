@@ -56,9 +56,15 @@ export class LitterG extends observeCssSelector(HTMLElement) {
         if (srcS.localName !== 'script')
             throw "Expecting script child";
         const script = document.createElement('script');
+        let importPaths = `
+        import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
+        import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
+`;
+        const importAttr = this.getAttribute('import');
+        if (importAttr)
+            importPaths = self[importAttr];
         const text = /* js */ `
-import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
-import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
+${importPaths}
 const litterG = customElements.get('litter-g');
 const count = litterG._count++;
 

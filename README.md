@@ -47,3 +47,31 @@ litter-g attaches a lit renderer property to any DOM element in its ShadowDOM re
 </custom-element-demo>
 ```
 -->
+
+## References
+
+A natural question arises -- where to get the lit-html references from?  Out of the box, litter-g just hardcodes some fine-for-development defaults:
+
+```JavaScript
+    import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
+    import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
+```
+
+However, if you want to use this in production, or if you want to access more of lit's directives, it would be best to create your own references to some (bundled) files that best meet your target browser / geography.
+
+To do this, create a string constant in document.head, which provides your prefered imports.  For example:
+
+```JavaScript
+    const litImports = `
+    import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
+    import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
+    `
+```
+
+Then in your litter-g tag, specify which constant to use for imports:
+
+```html
+<litter-g import="litImports"></litter-g>
+```
+
+As you can see, the "import" attribute should match the constant specified in document.head.  This will allow you to pick where the imports should come from.  

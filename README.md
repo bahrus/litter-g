@@ -3,7 +3,7 @@
 litter-g is a custom element that eliminates the boilerplate required to generate dynamic HTML using lit-html.
 
 
-Use case:  litter-g hopes to improve the ergonomics of a similar component, [xtal-method](https://www.webcomponents.org/element/xtal-method).  Both components are meant for applications that aren't necessarily dominantly built on lit-html.  They may be built using a server-centric framework, which just wants to shake some JavaScript pixie dust as needed.  Or maybe they are built using some "old" framework like Angular 1, but want to slowly convert into seomething more modern.  In theory, that should be possible, if you are using the [latest Angular 1](https://custom-elements-everywhere.com/).  
+Use case:  litter-g hopes to improve the ergonomics of a similar component, [xtal-method](https://www.webcomponents.org/element/xtal-method).  Both components are meant for applications that aren't necessarily dominantly built on lit-html.  They may be built using a server-centric framework, which just wants to shake some JavaScript pixie dust as needed.  Or maybe they are built using some "old" framework like Cold Fusion, but want to slowly convert into seomething more trendy.    
 
 
 The use case is spelled out quite nicely by [React's introductory pages](https://reactjs.org/docs/add-react-to-a-website.html):
@@ -28,7 +28,7 @@ The litter-g web component only affects things that happen within its ShadowDOM 
 ...
 <ul data-litter-g input='["He", "She", "They", "Ze"]'>
     <script nomodule >
-        html`items = ${items.map((i) => `item: ${i}`)}`
+        html`items = ${items.map((i) => `<li>${i}</li>`)}`
     </script>
 </ul>
 ```

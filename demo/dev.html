@@ -10,15 +10,16 @@
     <div>
         <script type="module" src="../litter-g.js"></script>
         <litter-g></litter-g>
-        <!-- <script nomodule>
-            const litterG = ({arithmetic, b, c}) => `
-                ${arithmetic}
-            `
-        </script>-->
+        
         <div data-litter-g>
-            <script></script>
+            <script nomodule>
+                html`${input.map((i) => html`<li>${i}</li>`)}`
+            </script>
         </div>
         
     </div>
+    <script>
+        document.querySelector('[data-litter-g]').input = ["He", "She", "They", "Ze"];
+    </script>
 </body>
 </html>

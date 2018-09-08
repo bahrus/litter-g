@@ -1,6 +1,6 @@
 # litter-g
 
-Use case:  litter-g hopes to improve the ergonomics of a similar component, [xtal-method](https://www.webcomponents.org/element/xtal-method).  Both components are meant for applications that aren't necessarily dominantly built on JavaScript-based.  They may be built using a server-centric framework, which just wants to strategically shake some JavaScript pixie dust as needed.  Or maybe they are built using some "old" framework like Cold Fusion, but want to slowly convert into something more modern. 
+Use case:  litter-g hopes to improve the ergonomics of a similar component, [xtal-method](https://www.webcomponents.org/element/xtal-method).  Both components are meant for applications that aren't necessarily dominantly built on JavaScript-centric paradigm.  They may be built using a server-centric framework, which just wants to strategically shake some JavaScript pixie dust as needed.  Or maybe they are built using some "old" framework like Cold Fusion, but want to slowly convert into something more modern. 
 
 The use case is spelled out quite nicely by [React's introductory pages](https://reactjs.org/docs/add-react-to-a-website.html):
 

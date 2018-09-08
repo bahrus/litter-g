@@ -11,19 +11,12 @@
 <body>
     <div>
         <litter-g></litter-g>
-        <xtal-deco>
-            <script>
-                ({
-                    input: ["He", "She", "They", "Ze"]
-                })
-            </script>
-        </xtal-deco>
-        <ul data-lit>
-            <script nomodule>
-                html`${input.map((i) => html`<li>${i}</li>`)}`
-            </script>
+        <ul data-lit data-input='["He", "She", "They", "Ze"]'>
+                <script nomodule>
+                    html`${input.map((i) => html`<li>${i}</li>`)}`
+                </script>
         </ul>
-        <script type="module" src="https://unpkg.com/litter-g@0.0.1/litter-g.js?module"></script>
+        <script type="module" src="https://unpkg.com/litter-g@0.0.4/litter-g.js?module"></script>
         <script src="https://unpkg.com/xtal-decorator@0.0.20/xtal-decorator.iife.js"></script>
     </div>
 </body>

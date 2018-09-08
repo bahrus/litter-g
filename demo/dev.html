@@ -11,14 +11,7 @@
         
         <litter-g></litter-g>
         
-        <xtal-deco>
-            <script>
-                ({
-                    input:["He", "She", "They", "Ze"]
-                })
-            </script>
-        </xtal-deco>
-        <ul data-lit>
+        <ul data-lit data-input='["He", "She", "They", "Ze"]'>
             <script nomodule>
                 html`${input.map((i) => html`<li>${i}</li>`)}`
             </script>

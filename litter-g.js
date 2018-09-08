@@ -26,11 +26,10 @@ export class LitterG extends observeCssSelector(HTMLElement) {
                 configurable: true,
             });
             target[prop] = initVal;
-            // if (target.hasOwnProperty(prop)) {
-            //     let value = (<any>this)[prop];
-            //     delete (<any>this)[prop];
-            //     (<any>this)[prop] = value;
-            // }
+            if (initVal !== undefined) {
+            }
+            else {
+            }
         });
     }
     addProps(target) {
@@ -38,6 +37,12 @@ export class LitterG extends observeCssSelector(HTMLElement) {
             return;
         this.updateProps(['input', 'renderer'], target);
         target.dataset.addedProps = 'true';
+        if (!target.input) {
+            const inp = target.dataset.input;
+            if (inp) {
+                target.input = JSON.parse(inp);
+            }
+        }
     }
     registerScript(target) {
         this.addProps(target);

@@ -30,3 +30,29 @@ The litter-g web component only affects things that happen within its ShadowDOM 
 ```
 
 litter-g attaches a lit renderer property to any DOM element in its ShadowDOM realm, having attribute 'data-lit', based on the snippet of lit syntax contained within the script child, as shown above.  It also attaches an "input" property.  Any time the input property changes, the renderer updates the parent DOM element. 
+
+<!--
+```
+<custom-element-demo>
+  <template>
+    <div>
+        <litter-g></litter-g>
+        <xtal-deco>
+            <script>
+                ({
+                    input: ["He", "She", "They", "Ze"]
+                })
+            </script>
+        </xtal-deco>
+        <ul data-lit>
+            <script nomodule>
+                html`${input.map((i) => html`<li>${i}</li>`)}`
+            </script>
+        </ul>
+        <script type="module" src="https://unpkg.com/litter-g@0.0.1/litter-g.js?module"></script>
+        <script src="https://unpkg.com/xtal-decorator@0.0.20/xtal-decorator.iife.js"></script>
+    </div>
+  </template>
+</custom-element-demo>
+```
+-->

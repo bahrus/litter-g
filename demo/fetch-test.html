@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>xtal-fetch demo</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="text/javascript">
+    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+      document.write('<script src="../IE11-polyfill.js"><\/script>');
+    }
+
+  </script>
+
+
+  
+</head>
+
+<body>
+  <div>
+    <h3>Basic xtal-fetch demo</h3>
+    <div>
+      <litter-g></litter-g>
+      <xtal-fetch-get fetch href="generated.json" as="json"></xtal-fetch-get>
+      <p-d on="fetch-complete" to="#peopleList{input:target.result};xtal-fetch-entities{inEntities:target.result}" ></p-d>
+      <ul id="peopleList" data-lit>
+          <script nomodule>
+              html`${input.map(i => html`<li>Name: ${i.name} <br>Email: ${i.email}</li>`)}`
+          </script>
+      </ul>
+      
+      <xtal-fetch-entities id="peopleEntities" as="json" fetch href="detail_:_id.json" for-each="_id" set-path="detail_contents"></xtal-fetch-entities>
+      <p-d on="fetch-complete" to="{input:target.result}"></p-d>
+      <ul id="detail" data-lit>
+          <script nomodule>
+              html`${input.map(i => html`<li>DetailContents: ${i.detail_contents.message}</li>`)}`
+          </script>
+      </ul>
+    </div>
+
+    <hr>
+    <div>
+      <p>Test of binding in expression -- need to watch network monitor to see the effects</p>
+    </div>
+    <label>Search string: </label><input type="text" value="{{searchString::input}}">
+    <xtal-fetch-req fetch="[[searchString]]" href="generated.json?search=[[searchString]]" debounce-duration="500"></xtal-fetch-req>
+    </template>
+    </dom-bind>
+
+    <xtal-fetch req-init='{"credentials": "include"}' fetch href="inc.html" as="text" insert-results></xtal-fetch>
+
+    <script type="module" src="https://unpkg.com/p-d.p-u@0.0.69/p-d.js?module"></script>
+    <script type="module" src="https://unpkg.com/xtal-fetch@0.0.43/xtal-fetch.js"></script>
+    <script type="module" src="../litter-g.js"></script> 
+  </div>
+</body>
+
+</html>

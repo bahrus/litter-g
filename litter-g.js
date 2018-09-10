@@ -26,10 +26,6 @@ export class LitterG extends observeCssSelector(HTMLElement) {
                 configurable: true,
             });
             target[prop] = initVal;
-            if (initVal !== undefined) {
-            }
-            else {
-            }
         });
     }
     addProps(target) {
@@ -63,12 +59,12 @@ export class LitterG extends observeCssSelector(HTMLElement) {
         const importAttr = this.getAttribute('import');
         if (importAttr)
             importPaths = self[importAttr];
+        const count = LitterG._count++;
         const text = /* js */ `
 ${importPaths}
 const litterG = customElements.get('litter-g');
-const count = litterG._count++;
 
-litterG['fn_' + count] = function(input, target){
+litterG['fn_' + ${count}] = function(input, target){
     const litter = (name) => ${srcS.innerHTML};
 
     render(litter(input), target);
@@ -78,13 +74,13 @@ litterG['fn_' + count] = function(input, target){
         script.type = 'module';
         script.innerHTML = text;
         document.head.appendChild(script);
-        this.attachRenderer(target);
+        this.attachRenderer(target, count);
     }
-    attachRenderer(target) {
-        const renderer = LitterG['fn_' + (LitterG._count - 1)];
+    attachRenderer(target, count) {
+        const renderer = LitterG['fn_' + count];
         if (renderer === undefined) {
             setTimeout(() => {
-                this.attachRenderer(target);
+                this.attachRenderer(target, count);
             }, 10);
             return;
         }

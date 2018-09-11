@@ -82,3 +82,26 @@ Then in your litter-g tag, specify which constant to use for imports:
 As you can see, the "import" attribute should match the constant specified in document.head.  This will allow you to pick where the imports should come from.  
 
 This strategy may be revisited as package maps gains momentum.
+
+## Multivariable Functions[TODO]
+
+Sometimes we want a ui element to depend on more than one input parameter.  To do this, we use litter-geez.  litter-geez extends litter-g so it supports everything litter-g does, with the syntax.  But in addition, it takes an expression like this:
+
+```html
+<litter-gz></litter-gz>
+...
+<div data-lit>
+    <script nomodule>
+        return (latitude, longitude) => html`
+            <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
+                (${latitude},${longitude})
+            </a> 
+        `
+    </script>
+</div>
+```
+
+and does the following:
+
+1)  Adds properties latitude, longitude to the div DOM element (no input property is added)
+2)  Applies the rendering function any time any of those properties change (with a little debouncing)

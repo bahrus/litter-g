@@ -85,7 +85,7 @@ This strategy may be revisited as package maps gains momentum.
 
 ## Multivariable Functions[TODO]
 
-Sometimes we want a ui element to depend on more than one input parameter.  To do this, we use litter-geez.  litter-geez extends litter-g so it supports everything litter-g does, with the syntax.  But in addition, it takes an expression like this:
+Sometimes we want a ui element to depend on more than one input parameter.  To do this, we use litter-gz.  litter-gz extends litter-g so it supports everything litter-g does, with the same syntax.  But in addition, it takes an expression like this:
 
 ```html
 <litter-gz></litter-gz>

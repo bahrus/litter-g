@@ -10,7 +10,7 @@ export class LitterG extends observeCssSelector(HTMLElement) {
             }, 0);
         }
     }
-    updateProps(props, target) {
+    commitProps(props, target) {
         props.forEach(prop => {
             const initVal = target[prop];
             Object.defineProperty(target, prop, {
@@ -31,7 +31,7 @@ export class LitterG extends observeCssSelector(HTMLElement) {
     addProps(target) {
         if (target.dataset.addedProps)
             return;
-        this.updateProps(['input', 'renderer'], target);
+        this.commitProps(['input', 'renderer'], target);
         target.dataset.addedProps = 'true';
         if (!target.input) {
             const inp = target.dataset.input;
@@ -40,8 +40,10 @@ export class LitterG extends observeCssSelector(HTMLElement) {
             }
         }
     }
+    getScript(srcScript) {
+        return srcScript.innerHTML;
+    }
     registerScript(target) {
-        this.addProps(target);
         if (!target.firstElementChild) {
             setTimeout(() => {
                 this.registerScript(target);
@@ -65,10 +67,8 @@ ${importPaths}
 const litterG = customElements.get('litter-g');
 
 litterG['fn_' + ${count}] = function(input, target){
-    const litter = (name) => ${srcS.innerHTML};
-
+    const litter = (name) => ${this.getScript(srcS)};
     render(litter(input), target);
-    
 }
 `;
         script.type = 'module';
@@ -85,6 +85,7 @@ litterG['fn_' + ${count}] = function(input, target){
             return;
         }
         target.renderer = renderer;
+        this.addProps(target);
     }
     connectedCallback() {
         this._connected = true;

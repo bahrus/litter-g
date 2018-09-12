@@ -15,7 +15,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
 
         }
     }
-    updateProps(props: string[], target: any){
+    commitProps(props: string[], target: any){
         props.forEach(prop =>{
             const initVal = target[prop];
             Object.defineProperty(target, prop, {
@@ -35,7 +35,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
     }
     addProps(target: any){
         if(target.dataset.addedProps) return;
-        this.updateProps(['input', 'renderer'], target);
+        this.commitProps(['input', 'renderer'], target);
         target.dataset.addedProps = 'true';
         if(!target.input){
             const inp = target.dataset.input;
@@ -45,15 +45,18 @@ export class LitterG extends observeCssSelector(HTMLElement){
         }
 
     }
+    getScript(srcScript: HTMLScriptElement): String{
+        return srcScript.innerHTML;
+    }
     registerScript(target: HTMLElement){
-        this.addProps(target);
+        
         if(!target.firstElementChild){
             setTimeout(() =>{
                 this.registerScript(target);
             }, 50);
             return;
         }
-        const srcS = target.firstElementChild
+        const srcS = target.firstElementChild as HTMLScriptElement;
         if(srcS!.localName !== 'script') throw "Expecting script child";
         
         const script = document.createElement('script');
@@ -64,17 +67,17 @@ export class LitterG extends observeCssSelector(HTMLElement){
         const importAttr = this.getAttribute('import');
         if(importAttr) importPaths = (<any>self)[importAttr];
         const count = LitterG._count++;
+        
         const text = /* js */`
 ${importPaths}
 const litterG = customElements.get('litter-g');
 
 litterG['fn_' + ${count}] = function(input, target){
-    const litter = (name) => ${srcS.innerHTML};
-
+    const litter = (name) => ${this.getScript(srcS)};
     render(litter(input), target);
-    
 }
 `;
+
         script.type = 'module';
         script.innerHTML = text;
         document.head.appendChild(script);
@@ -89,6 +92,7 @@ litterG['fn_' + ${count}] = function(input, target){
             return;
         }
         target.renderer = renderer;
+        this.addProps(target);
     }
     connectedCallback(){
         this._connected = true;

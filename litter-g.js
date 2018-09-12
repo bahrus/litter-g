@@ -28,10 +28,10 @@ export class LitterG extends observeCssSelector(HTMLElement) {
             target[prop] = initVal;
         });
     }
-    addProps(target) {
+    addProps(target, scriptInfo) {
         if (target.dataset.addedProps)
             return;
-        this.commitProps(['input', 'renderer'], target);
+        this.commitProps(scriptInfo.args.concat('render'), target);
         target.dataset.addedProps = 'true';
         if (!target.input) {
             const inp = target.dataset.input;
@@ -79,18 +79,18 @@ litterG['fn_' + ${count}] = function(${args}, target){
         script.type = 'module';
         script.innerHTML = text;
         document.head.appendChild(script);
-        this.attachRenderer(target, count);
+        this.attachRenderer(target, count, scriptInfo);
     }
-    attachRenderer(target, count) {
+    attachRenderer(target, count, scriptInfo) {
         const renderer = LitterG['fn_' + count];
         if (renderer === undefined) {
             setTimeout(() => {
-                this.attachRenderer(target, count);
+                this.attachRenderer(target, count, scriptInfo);
             }, 10);
             return;
         }
         target.renderer = renderer;
-        this.addProps(target);
+        this.addProps(target, scriptInfo);
     }
     connectedCallback() {
         this._connected = true;

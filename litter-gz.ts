@@ -1,11 +1,11 @@
-import {LitterG, IFunctionInfo} from './litter-g.js';
+import {LitterG, IScriptInfo} from './litter-g.js';
 import {define} from 'xtal-latx/define.js'
 
 export class LitterGZ extends LitterG {
 
     static get is(){return 'litter-gz';}
 
-    getScript(srcScript: HTMLScriptElement) : IFunctionInfo{
+    getScript(srcScript: HTMLScriptElement) : IScriptInfo{
         const inner = srcScript.innerHTML.trim();
         if(inner.startsWith('return')){
             const iFatArrowPos = inner.indexOf('=>');

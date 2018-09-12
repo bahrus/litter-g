@@ -23,31 +23,45 @@ function (_observeCssSelector) {
       }
     }
   }, {
-    key: "updateProps",
-    value: function updateProps(props, target) {
-      props.forEach(function (prop) {
-        var initVal = target[prop];
-        Object.defineProperty(target, prop, {
-          get: function get() {
-            return this['_' + prop];
-          },
-          set: function set(val) {
-            this['_' + prop] = val;
-            if (this.renderer && this.input) this.renderer(this.input, target);
-          },
-          enumerable: true,
-          configurable: true
-        });
-        target[prop] = initVal;
+    key: "defGenProp",
+    value: function defGenProp(target, prop) {}
+  }, {
+    key: "commitProps",
+    value: function commitProps(props, target) {
+      var _this2 = this;
 
-        if (initVal !== undefined) {} else {}
+      props.forEach(function (prop) {
+        var initVal = target[prop]; //TODO:  move default case into litter-gz
+
+        switch (prop) {
+          case 'render':
+          case 'input':
+            Object.defineProperty(target, prop, {
+              get: function get() {
+                return this['_' + prop];
+              },
+              set: function set(val) {
+                this['_' + prop] = val;
+                if (this.input && this.renderer) this.renderer(this.input, target);
+              },
+              enumerable: true,
+              configurable: true
+            });
+            break;
+
+          default:
+            _this2.defGenProp(target, prop);
+
+        }
+
+        if (initVal !== undefined) target[prop] = initVal;
       });
     }
   }, {
     key: "addProps",
-    value: function addProps(target) {
+    value: function addProps(target, scriptInfo) {
       if (target.dataset.addedProps) return;
-      this.updateProps(['input', 'renderer'], target);
+      this.commitProps(scriptInfo.args.concat('render', 'input'), target);
       target.dataset.addedProps = 'true';
 
       if (!target.input) {
@@ -59,15 +73,21 @@ function (_observeCssSelector) {
       }
     }
   }, {
+    key: "getScript",
+    value: function getScript(srcScript) {
+      return {
+        args: ['input'],
+        body: srcScript.innerHTML
+      };
+    }
+  }, {
     key: "registerScript",
     value: function registerScript(target) {
-      var _this2 = this;
-
-      this.addProps(target);
+      var _this3 = this;
 
       if (!target.firstElementChild) {
         setTimeout(function () {
-          _this2.registerScript(target);
+          _this3.registerScript(target);
         }, 50);
         return;
       }
@@ -75,32 +95,37 @@ function (_observeCssSelector) {
       var srcS = target.firstElementChild;
       if (srcS.localName !== 'script') throw "Expecting script child";
       var script = document.createElement('script');
-      var importPaths = "\n        import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';\n        import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';\n";
+      var base = 'https://cdn.jsdelivr.net/npm/lit-html/';
+      var importPaths = "\n        import {html, render} from '".concat(base, "lit-html.js';\n        import {repeat} from '").concat(base, "lib/repeat.js';\n");
       var importAttr = this.getAttribute('import');
       if (importAttr) importPaths = self[importAttr];
+      var count = LitterG._count++;
+      var scriptInfo = this.getScript(srcS);
+      var args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : 'input';
       var text =
       /* js */
-      "\n".concat(importPaths, "\nconst litterG = customElements.get('litter-g');\nconst count = litterG._count++;\n\nlitterG['fn_' + count] = function(input, target){\n    const litter = (name) => ").concat(srcS.innerHTML, ";\n\n    render(litter(input), target);\n    \n}\n");
+      "\n".concat(importPaths, "\nconst litterG = customElements.get('litter-g');\nconst litter = (").concat(args, ") => ").concat(scriptInfo.body, ";\nlitterG['fn_' + ").concat(count, "] = function(input, target){\n    render(litter(input), target);\n}\n");
       script.type = 'module';
       script.innerHTML = text;
       document.head.appendChild(script);
-      this.attachRenderer(target);
+      this.attachRenderer(target, count, scriptInfo);
     }
   }, {
     key: "attachRenderer",
-    value: function attachRenderer(target) {
-      var _this3 = this;
+    value: function attachRenderer(target, count, scriptInfo) {
+      var _this4 = this;
 
-      var renderer = LitterG['fn_' + (LitterG._count - 1)];
+      var renderer = LitterG['fn_' + count];
 
       if (renderer === undefined) {
         setTimeout(function () {
-          _this3.attachRenderer(target);
+          _this4.attachRenderer(target, count, scriptInfo);
         }, 10);
         return;
       }
 
       target.renderer = renderer;
+      this.addProps(target, scriptInfo);
     }
   }, {
     key: "connectedCallback",

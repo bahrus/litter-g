@@ -10,6 +10,7 @@ export class LitterG extends observeCssSelector(HTMLElement) {
             }, 0);
         }
     }
+    defGenProp(target, prop) { }
     commitProps(props, target) {
         props.forEach(prop => {
             const initVal = target[prop];
@@ -31,31 +32,11 @@ export class LitterG extends observeCssSelector(HTMLElement) {
                     });
                     break;
                 default:
-                    Object.defineProperty(target, prop, {
-                        get: function () {
-                            return this['_' + prop];
-                        },
-                        set: function (val) {
-                            this['_' + prop] = val;
-                            //TODO:  add debouncing
-                            if (this.input) {
-                                this.input[prop] = val;
-                                this.input = Object.assign({}, this.input);
-                            }
-                            else {
-                                this.input = { [prop]: val };
-                            }
-                        },
-                        enumerable: true,
-                        configurable: true,
-                    });
+                    this.defGenProp(target, prop);
             }
             if (initVal !== undefined)
                 target[prop] = initVal;
         });
-        target._initialized = true;
-        if (target.input)
-            target.renderer(target.input, target);
     }
     addProps(target, scriptInfo) {
         if (target.dataset.addedProps)
@@ -86,9 +67,10 @@ export class LitterG extends observeCssSelector(HTMLElement) {
         if (srcS.localName !== 'script')
             throw "Expecting script child";
         const script = document.createElement('script');
+        const base = 'https://cdn.jsdelivr.net/npm/lit-html/';
         let importPaths = `
-        import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
-        import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
+        import {html, render} from '${base}lit-html.js';
+        import {repeat} from '${base}lib/repeat.js';
 `;
         const importAttr = this.getAttribute('import');
         if (importAttr)

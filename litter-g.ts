@@ -16,9 +16,11 @@ export class LitterG extends observeCssSelector(HTMLElement){
             }, 0)
         }
     }
-    commitProps(props: string[], target: any){
+    defGenProp(target: HTMLElement, prop: string){}
+
+    commitProps(props: string[], target: HTMLElement){
         props.forEach(prop =>{
-            const initVal = target[prop];
+            const initVal = (<any>target)[prop];
             //TODO:  move default case into litter-gz
             switch(prop){
                 case 'render':
@@ -36,30 +38,12 @@ export class LitterG extends observeCssSelector(HTMLElement){
                     });
                     break;
                 default:
-                    Object.defineProperty(target, prop, {
-                        get: function () {
-                            return this['_' + prop];
-                        },
-                        set: function (val) {
-                            this['_' + prop] = val;
-                            //TODO:  add debouncing
-                            if(this.input) {
-                                this.input[prop] = val;
-                                this.input = Object.assign({}, this.input);
-                            }else{
-                                this.input = {[prop]: val};
-                            }
-                        },
-                        enumerable: true,
-                        configurable: true,
-                    });
+                    this.defGenProp(target, prop);
             }
 
-            if(initVal !== undefined)  target[prop] = initVal;
+            if(initVal !== undefined)  (<any>target)[prop] = initVal;
             
         });
-        target._initialized = true;
-        if(target.input) target.renderer(target.input, target);
     }
     addProps(target: any, scriptInfo: IScriptInfo){
         if(target.dataset.addedProps) return;
@@ -77,7 +61,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
         return {
             args: ['input'],
             body: srcScript.innerHTML,
-        } ;
+        };
     }
     registerScript(target: HTMLElement){
         
@@ -91,9 +75,10 @@ export class LitterG extends observeCssSelector(HTMLElement){
         if(srcS!.localName !== 'script') throw "Expecting script child";
         
         const script = document.createElement('script');
+        const base = 'https://cdn.jsdelivr.net/npm/lit-html/';
         let importPaths = `
-        import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
-        import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
+        import {html, render} from '${base}lit-html.js';
+        import {repeat} from '${base}lib/repeat.js';
 `;
         const importAttr = this.getAttribute('import');
         if(importAttr) importPaths = (<any>self)[importAttr];

@@ -20,6 +20,26 @@ export class LitterGZ extends LitterG {
         }
         
     }
+
+    defGenProp(target: HTMLElement, prop: string){
+        Object.defineProperty(target, prop, {
+            get: function () {
+                return this['_' + prop];
+            },
+            set: function (val) {
+                this['_' + prop] = val;
+                //TODO:  add debouncing
+                if(this.input) {
+                    this.input[prop] = val;
+                    this.input = Object.assign({}, this.input);
+                }else{
+                    this.input = {[prop]: val};
+                }
+            },
+            enumerable: true,
+            configurable: true,
+        });
+    }
 }
 
 define(LitterGZ);

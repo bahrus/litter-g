@@ -17,6 +17,26 @@ export class LitterGZ extends LitterG {
             return super.getScript(srcScript);
         }
     }
+    defGenProp(target, prop) {
+        Object.defineProperty(target, prop, {
+            get: function () {
+                return this['_' + prop];
+            },
+            set: function (val) {
+                this['_' + prop] = val;
+                //TODO:  add debouncing
+                if (this.input) {
+                    this.input[prop] = val;
+                    this.input = Object.assign({}, this.input);
+                }
+                else {
+                    this.input = { [prop]: val };
+                }
+            },
+            enumerable: true,
+            configurable: true,
+        });
+    }
 }
 define(LitterGZ);
 //# sourceMappingURL=litter-gz.js.map

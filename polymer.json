@@ -1,11 +1,13 @@
 {
   "sources":[
     "litter-g.js",
-    "litter-g.iife.js"
+    "litter-g.iife.js",
+    "litter-gz.js",
+    "litter-gz.iife.js"
   ],
   "lint": {
     "rules": [
-      "polymer-2"
+      "polymer-3"
     ]
   },
   "builds":[

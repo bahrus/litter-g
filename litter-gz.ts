@@ -9,7 +9,7 @@ export class LitterGZ extends LitterG {
         const inner = srcScript.innerHTML.trim();
         if(inner.startsWith('return')){
             const iFatArrowPos = inner.indexOf('=>');
-            const lhs = inner.substr(0, iFatArrowPos).replace('return', '').replace('(', '').replace(')', '');
+            const lhs = inner.substr(0, iFatArrowPos).replace('return', '').replace('(', '').replace(')', '').replace('{', '').replace('}', '');
             const rhs = inner.substr(iFatArrowPos + 2);
             return {
                 args: lhs.split(',').map(s => s.trim()),

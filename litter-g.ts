@@ -19,18 +19,43 @@ export class LitterG extends observeCssSelector(HTMLElement){
     commitProps(props: string[], target: any){
         props.forEach(prop =>{
             const initVal = target[prop];
-            Object.defineProperty(target, prop, {
-                get: function () {
-                    return this['_' + prop];
-                },
-                set: function (val) {
-                    this['_' + prop] = val;
-                    if(this._initialized) this.renderer(this.input, target);
-                },
-                enumerable: true,
-                configurable: true,
-            });
-            target[prop] = initVal;
+            //TODO:  move default case into litter-gz
+            switch(prop){
+                case 'render':
+                case 'input':
+                    Object.defineProperty(target, prop, {
+                        get: function () {
+                            return this['_' + prop];
+                        },
+                        set: function (val) {
+                            this['_' + prop] = val;
+                            if(this.input && this.renderer) this.renderer(this.input, target);
+                        },
+                        enumerable: true,
+                        configurable: true,
+                    });
+                    break;
+                default:
+                    Object.defineProperty(target, prop, {
+                        get: function () {
+                            return this['_' + prop];
+                        },
+                        set: function (val) {
+                            this['_' + prop] = val;
+                            //TODO:  add debouncing
+                            if(this.input) {
+                                this.input[prop] = val;
+                                this.input = Object.assign({}, this.input);
+                            }else{
+                                this.input = {[prop]: val};
+                            }
+                        },
+                        enumerable: true,
+                        configurable: true,
+                    });
+            }
+
+            if(initVal !== undefined)  target[prop] = initVal;
             
         });
         target._initialized = true;
@@ -38,7 +63,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
     }
     addProps(target: any, scriptInfo: IScriptInfo){
         if(target.dataset.addedProps) return;
-        this.commitProps(scriptInfo.args.concat('render'), target);
+        this.commitProps(scriptInfo.args.concat('render', 'input'), target);
         target.dataset.addedProps = 'true';
         if(!target.input){
             const inp = target.dataset.input;
@@ -74,14 +99,14 @@ export class LitterG extends observeCssSelector(HTMLElement){
         if(importAttr) importPaths = (<any>self)[importAttr];
         const count = LitterG._count++;
         const scriptInfo = this.getScript(srcS);
-        const args = scriptInfo.args.join(',');
+        const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : 'input';
         const text = /* js */`
 ${importPaths}
 const litterG = customElements.get('litter-g');
 const litter = (${args}) => ${scriptInfo.body};
-litterG['fn_' + ${count}] = function(${args}, target){
-
-    render(litter(${args}), target);
+litterG['fn_' + ${count}] = function(input, target){
+    debugger;
+    render(litter(input), target);
 }
 `;
 

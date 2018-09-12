@@ -11,23 +11,26 @@
 <body>
     <litter-gz></litter-gz>
 
-    <!-- <div data-lit>
+    <div data-lit id="long_lat">
             <script nomodule>
-                return (latitude, longitude) => html`
+                return ({latitude, longitude}) => html`
                     <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
                         (${latitude},${longitude})
                     </a> 
-                `
+                `;
             </script>
-    </div> -->
+    </div>
 
-    <ul data-lit data-input='["He", "She", "They", "Ze"]'>
+    <!-- <ul data-lit data-input='["He", "She", "They", "Ze"]'>
         <script nomodule>
             html`${input.map(i => html`<li>${i}</li>`)}`
         </script>
-    </ul>
+    </ul> -->
 
     <script type="module" src="../litter-gz.js"></script>
+    <script>
+        long_lat.latitude = 100;
+    </script>
 </body>
 
 </html>

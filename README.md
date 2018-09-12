@@ -92,7 +92,7 @@ Sometimes we want a ui element to depend on more than one input parameter.  To d
 ...
 <div data-lit>
     <script nomodule>
-        return (latitude, longitude) => html`
+        return ({latitude, longitude}) => html`
             <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
                 (${latitude},${longitude})
             </a> 
@@ -103,5 +103,5 @@ Sometimes we want a ui element to depend on more than one input parameter.  To d
 
 and does the following:
 
-1)  Adds properties latitude, longitude to the div DOM element (no input property is added)
+1)  Adds properties latitude, longitude to the div DOM element.  Updates to either of those properties also cause
 2)  Applies the rendering function any time any of those properties change (with a little debouncing)

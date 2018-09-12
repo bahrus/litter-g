@@ -1,6 +1,9 @@
 import {observeCssSelector} from 'xtal-latx/observeCssSelector.js';
 import {define} from 'xtal-latx/define.js'
-
+export interface IFunctionInfo{
+    args: string[],
+    body: string,
+}
 export class LitterG extends observeCssSelector(HTMLElement){
     static get is(){return 'litter-g';}
     static _count = 0;
@@ -45,8 +48,11 @@ export class LitterG extends observeCssSelector(HTMLElement){
         }
 
     }
-    getScript(srcScript: HTMLScriptElement): String{
-        return srcScript.innerHTML;
+    getScript(srcScript: HTMLScriptElement): IFunctionInfo{
+        return {
+            args: ['input'],
+            body: srcScript.innerHTML,
+        } ;
     }
     registerScript(target: HTMLElement){
         
@@ -67,14 +73,15 @@ export class LitterG extends observeCssSelector(HTMLElement){
         const importAttr = this.getAttribute('import');
         if(importAttr) importPaths = (<any>self)[importAttr];
         const count = LitterG._count++;
-        
+        const scriptInfo = this.getScript(srcS);
+        const args = scriptInfo.args.join(',');
         const text = /* js */`
 ${importPaths}
 const litterG = customElements.get('litter-g');
+const litter = (${args}) => ${scriptInfo.body};
+litterG['fn_' + ${count}] = function(${args}, target){
 
-litterG['fn_' + ${count}] = function(input, target){
-    const litter = (name) => ${this.getScript(srcS)};
-    render(litter(input), target);
+    render(litter(${args}), target);
 }
 `;
 

@@ -105,7 +105,6 @@ ${importPaths}
 const litterG = customElements.get('litter-g');
 const litter = (${args}) => ${scriptInfo.body};
 litterG['fn_' + ${count}] = function(input, target){
-    debugger;
     render(litter(input), target);
 }
 `;

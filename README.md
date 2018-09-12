@@ -83,7 +83,7 @@ As you can see, the "import" attribute should match the constant specified in do
 
 This strategy may be revisited as package maps gains momentum.
 
-## Multivariable Functions[TODO]
+## Multivariable Functions
 
 Sometimes we want a ui element to depend on more than one input parameter.  To do this, we use litter-gz.  litter-gz extends litter-g so it supports everything litter-g does, with the same syntax.  But in addition, it takes an expression like this:
 
@@ -103,5 +103,5 @@ Sometimes we want a ui element to depend on more than one input parameter.  To d
 
 and does the following:
 
-1)  Adds properties latitude, longitude to the div DOM element.  Updates to either of those properties also cause
-2)  Applies the rendering function any time any of those properties change (with a little debouncing)
+1)  Adds properties latitude, longitude to the div DOM element.   
+2)  Updates the input property any time either of those properties change (with a little debouncing [TODO]), thus causing lit-html to rerender.

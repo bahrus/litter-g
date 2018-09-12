@@ -14,8 +14,6 @@ export class LitterG extends observeCssSelector(HTMLElement){
             setTimeout(() =>{
                 this.registerScript(target);
             }, 0)
-            
-
         }
     }
     commitProps(props: string[], target: any){
@@ -27,14 +25,16 @@ export class LitterG extends observeCssSelector(HTMLElement){
                 },
                 set: function (val) {
                     this['_' + prop] = val;
-                    if(this.renderer && this.input) this.renderer(this.input, target);
+                    if(this._initialized) this.renderer(this.input, target);
                 },
                 enumerable: true,
                 configurable: true,
             });
             target[prop] = initVal;
             
-        })
+        });
+        target._initialized = true;
+        if(target.input) target.renderer(target.input, target);
     }
     addProps(target: any, scriptInfo: IScriptInfo){
         if(target.dataset.addedProps) return;

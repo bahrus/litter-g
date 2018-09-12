@@ -19,7 +19,7 @@ export class LitterG extends observeCssSelector(HTMLElement) {
                 },
                 set: function (val) {
                     this['_' + prop] = val;
-                    if (this.renderer && this.input)
+                    if (this._initialized)
                         this.renderer(this.input, target);
                 },
                 enumerable: true,
@@ -27,6 +27,9 @@ export class LitterG extends observeCssSelector(HTMLElement) {
             });
             target[prop] = initVal;
         });
+        target._initialized = true;
+        if (target.input)
+            target.renderer(target.input, target);
     }
     addProps(target, scriptInfo) {
         if (target.dataset.addedProps)

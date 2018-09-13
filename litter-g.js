@@ -103,6 +103,7 @@ litterG['fn_' + ${count}] = function(input, target){
         this.addProps(target, scriptInfo);
     }
     connectedCallback() {
+        this.style.display = 'none';
         this._connected = true;
         this.onPropsChange();
     }

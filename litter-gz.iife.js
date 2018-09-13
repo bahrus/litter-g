@@ -95,14 +95,15 @@ class LitterG extends observeCssSelector(HTMLElement) {
             switch (prop) {
                 case 'render':
                 case 'input':
+                case 'target':
                     Object.defineProperty(target, prop, {
                         get: function () {
                             return this['_' + prop];
                         },
                         set: function (val) {
                             this['_' + prop] = val;
-                            if (this.input && this.renderer)
-                                this.renderer(this.input, target);
+                            if (this.input && this.renderer && !this.hasAttribute('disabled'))
+                                this.renderer(this.input, this.target || target);
                         },
                         enumerable: true,
                         configurable: true,
@@ -118,7 +119,7 @@ class LitterG extends observeCssSelector(HTMLElement) {
     addProps(target, scriptInfo) {
         if (target.dataset.addedProps)
             return;
-        this.commitProps(scriptInfo.args.concat('render', 'input'), target);
+        this.commitProps(scriptInfo.args.concat('render', 'input', 'target'), target);
         target.dataset.addedProps = 'true';
         if (!target.input) {
             const inp = target.dataset.input;
@@ -178,6 +179,7 @@ litterG['fn_' + ${count}] = function(input, target){
         this.addProps(target, scriptInfo);
     }
     connectedCallback() {
+        this.style.display = 'none';
         this._connected = true;
         this.onPropsChange();
     }

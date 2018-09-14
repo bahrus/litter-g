@@ -10,16 +10,32 @@
 
 <body>
     <div>
-        <litter-g></litter-g>
+        <litter-gz></litter-gz>
         <ul data-lit data-input='["He", "She", "They", "Ze"]'>
                 <script nomodule>
                     html`${input.map((i) => html`<li>${i}</li>`)}`
                 </script>
         </ul>
 
+        <wired-input aria-placeholder="Latitude" placeholder="Latitude" value="41.903878"></wired-input>
+        <p-d on="input" to="#long_lat{latitude}" m="1"></p-d>
+        <wired-input aria-placeholder="Longitude" placholder="Longitude" data- value="12.452818"></wired-input>
+        <p-d on="input" to="#long_lat{longitude}" m="1"></p-d>
         
+        <div data-lit id="long_lat">
+                <script nomodule>
+                    return ({latitude, longitude}) => html`
+                        <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
+                            (${latitude},${longitude})
+                        </a> 
+                    `;
+                </script>
+        </div>
 
-        <script type="module" src="https://unpkg.com/litter-g@0.0.5/litter-g.js?module"></script>
+        <!-- <script type="module" src="https://unpkg.com/litter-g@0.0.13/litter-gz.iife.js?module"></script> -->
+        <script type="module" src="../litter-gz.iife.js"></script>
+        <script type="module" src="https://unpkg.com/wired-elements@latest/dist/wired-elements.bundled.min.js"></script>
+        <script type="module" src="https://unpkg.com/p-d.p-u@0.0.61/p-d.p-u.js"></script>
     </div>
 </body>
 

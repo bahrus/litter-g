@@ -82,7 +82,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
         import {repeat} from '${base}lib/repeat.js';
 `;
         const importAttr = this.getAttribute('import');
-        if(importAttr) importPaths = (<any>self)[importAttr];
+        if(importAttr !== null) importPaths = (<any>self)[importAttr];
         const count = LitterG._count++;
         const scriptInfo = this.getScript(srcS);
         const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : 'input';

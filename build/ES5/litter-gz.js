@@ -1,5 +1,6 @@
 import { LitterG } from './litter-g.js';
 import { define } from "./node_modules/xtal-latx/define.js";
+import { getScript as _getScript, destruct } from "./node_modules/xtal-latx/destruct.js";
 export var LitterGZ =
 /*#__PURE__*/
 function (_LitterG) {
@@ -13,42 +14,14 @@ function (_LitterG) {
   babelHelpers.createClass(LitterGZ, [{
     key: "getScript",
     value: function getScript(srcScript) {
-      var inner = srcScript.innerHTML.trim();
+      var s = _getScript(srcScript);
 
-      if (inner.startsWith('return')) {
-        var iFatArrowPos = inner.indexOf('=>');
-        var lhs = inner.substr(0, iFatArrowPos).replace('return', '').replace('(', '').replace(')', '').replace('{', '').replace('}', '');
-        var rhs = inner.substr(iFatArrowPos + 2);
-        return {
-          args: lhs.split(',').map(function (s) {
-            return s.trim();
-          }),
-          body: rhs
-        };
-      } else {
-        return babelHelpers.get(LitterGZ.prototype.__proto__ || Object.getPrototypeOf(LitterGZ.prototype), "getScript", this).call(this, srcScript);
-      }
+      return s === null ? babelHelpers.get(LitterGZ.prototype.__proto__ || Object.getPrototypeOf(LitterGZ.prototype), "getScript", this).call(this, srcScript) : s;
     }
   }, {
     key: "defGenProp",
     value: function defGenProp(target, prop) {
-      Object.defineProperty(target, prop, {
-        get: function get() {
-          return this['_' + prop];
-        },
-        set: function set(val) {
-          this['_' + prop] = val; //TODO:  add debouncing
-
-          if (this.input) {
-            this.input[prop] = val;
-            this.input = Object.assign({}, this.input);
-          } else {
-            this.input = babelHelpers.defineProperty({}, prop, val);
-          }
-        },
-        enumerable: true,
-        configurable: true
-      });
+      destruct(target, prop);
     }
   }], [{
     key: "is",

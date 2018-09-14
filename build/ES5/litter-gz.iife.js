@@ -11,6 +11,49 @@
     customElements.define(tagName, custEl);
   }
 
+  function _getScript(srcScript) {
+    var inner = srcScript.innerHTML.trim();
+
+    if (inner.startsWith('return')) {
+      var iFatArrowPos = inner.indexOf('=>');
+      var c2del = ['return', '(', ')', '{', '}'];
+      var lhs = inner.substr(0, iFatArrowPos);
+      c2del.forEach(function (t) {
+        return lhs = lhs.replace(t, '');
+      });
+      var rhs = inner.substr(iFatArrowPos + 2);
+      return {
+        args: lhs.split(',').map(function (s) {
+          return s.trim();
+        }),
+        body: rhs
+      };
+    } else {
+      return null;
+    }
+  }
+
+  function destruct(target, prop) {
+    var megaProp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'input';
+    Object.defineProperty(target, prop, {
+      get: function get() {
+        return this['_' + prop];
+      },
+      set: function set(val) {
+        this['_' + prop] = val;
+
+        if (this[megaProp]) {
+          this[megaProp][prop] = val;
+          this[megaProp] = Object.assign({}, this[megaProp]);
+        } else {
+          this[megaProp] = babelHelpers.defineProperty({}, prop, val);
+        }
+      },
+      enumerable: true,
+      configurable: true
+    });
+  }
+
   function getHost(el) {
     var parent = el;
 
@@ -185,7 +228,7 @@
         if (srcS.localName !== 'script') throw "Expecting script child";
         var script = document.createElement('script');
         var base = 'https://cdn.jsdelivr.net/npm/lit-html/';
-        var importPaths = "\n";
+        var importPaths = "\n        import {html, render} from '".concat(base, "lit-html.js';\n        import {repeat} from '").concat(base, "lib/repeat.js';\n");
         var importAttr = this.getAttribute('import');
         if (importAttr) importPaths = self[importAttr];
         var count = LitterG._count++;
@@ -254,42 +297,14 @@
     babelHelpers.createClass(LitterGZ, [{
       key: "getScript",
       value: function getScript(srcScript) {
-        var inner = srcScript.innerHTML.trim();
+        var s = _getScript(srcScript);
 
-        if (inner.startsWith('return')) {
-          var iFatArrowPos = inner.indexOf('=>');
-          var lhs = inner.substr(0, iFatArrowPos).replace('return', '').replace('(', '').replace(')', '').replace('{', '').replace('}', '');
-          var rhs = inner.substr(iFatArrowPos + 2);
-          return {
-            args: lhs.split(',').map(function (s) {
-              return s.trim();
-            }),
-            body: rhs
-          };
-        } else {
-          return babelHelpers.get(LitterGZ.prototype.__proto__ || Object.getPrototypeOf(LitterGZ.prototype), "getScript", this).call(this, srcScript);
-        }
+        return s === null ? babelHelpers.get(LitterGZ.prototype.__proto__ || Object.getPrototypeOf(LitterGZ.prototype), "getScript", this).call(this, srcScript) : s;
       }
     }, {
       key: "defGenProp",
       value: function defGenProp(target, prop) {
-        Object.defineProperty(target, prop, {
-          get: function get() {
-            return this['_' + prop];
-          },
-          set: function set(val) {
-            this['_' + prop] = val; //TODO:  add debouncing
-
-            if (this.input) {
-              this.input[prop] = val;
-              this.input = Object.assign({}, this.input);
-            } else {
-              this.input = babelHelpers.defineProperty({}, prop, val);
-            }
-          },
-          enumerable: true,
-          configurable: true
-        });
+        destruct(target, prop);
       }
     }], [{
       key: "is",

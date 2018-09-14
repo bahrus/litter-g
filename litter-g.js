@@ -74,7 +74,7 @@ export class LitterG extends observeCssSelector(HTMLElement) {
         import {repeat} from '${base}lib/repeat.js';
 `;
         const importAttr = this.getAttribute('import');
-        if (importAttr)
+        if (importAttr !== null)
             importPaths = self[importAttr];
         const count = LitterG._count++;
         const scriptInfo = this.getScript(srcS);

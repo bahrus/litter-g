@@ -17,8 +17,11 @@
                 </script>
         </ul>
 
+        <div>Latutide: </div>
         <wired-input aria-placeholder="Latitude" placeholder="Latitude" value="41.903878"></wired-input>
         <p-d on="input" to="#long_lat{latitude}" m="1"></p-d>
+
+        <div>Longitude:</div>
         <wired-input aria-placeholder="Longitude" placholder="Longitude" data- value="12.452818"></wired-input>
         <p-d on="input" to="#long_lat{longitude}" m="1"></p-d>
         
@@ -32,6 +35,12 @@
                 </script>
         </div>
 
+        <style>
+            .fieldInput{
+                display:flex;
+                flex-direction: row;
+            }
+        </style>
         <!-- <script type="module" src="https://unpkg.com/litter-g@0.0.13/litter-gz.iife.js?module"></script> -->
         <script type="module" src="../litter-gz.iife.js"></script>
         <script type="module" src="https://unpkg.com/wired-elements@latest/dist/wired-elements.bundled.min.js"></script>

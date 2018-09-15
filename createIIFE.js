@@ -1,3 +1,6 @@
 const jiife = require('jiife');
-jiife.processFiles(['node_modules/xtal-latx/define.js', 'node_modules/xtal-latx/destruct.js', 'node_modules/xtal-latx/getHost.js', 'node_modules/xtal-latx/observeCssSelector.js', 'litter-g.js'], 'litter-g.iife.js');
-jiife.processFiles(['node_modules/xtal-latx/define.js', 'node_modules/xtal-latx/destruct.js','node_modules/xtal-latx/getHost.js', 'node_modules/xtal-latx/observeCssSelector.js', 'litter-g.js', 'litter-gz.js'], 'litter-gz.iife.js');
+const base = ['node_modules/xtal-latx/define.js', 'node_modules/xtal-latx/debounce.js', 'node_modules/xtal-latx/destruct.js', 'node_modules/xtal-latx/getHost.js', 'node_modules/xtal-latx/observeCssSelector.js'];
+const litterg = base.concat('litter-g.js');
+const littergz = litterg.concat('litter-gz.js');
+jiife.processFiles(litterg, 'litter-g.iife.js');
+jiife.processFiles(littergz, 'litter-gz.iife.js');

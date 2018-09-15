@@ -104,7 +104,7 @@ Sometimes we want a ui element to depend on more than one input parameter.  To d
 and does the following:
 
 1)  Adds properties latitude, longitude to the div DOM element.   
-2)  Updates the input property any time either of those properties change (with a little debouncing [TODO]), thus causing lit-html to rerender.
+2)  Updates the input property any time either of those properties change (with a little debouncing), thus causing lit-html to rerender.
 
 ## Viewing Your Element
 

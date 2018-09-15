@@ -9,6 +9,14 @@
     }
     customElements.define(tagName, custEl);
 }
+const debounce = (fn, time) => {
+    let timeout;
+    return function () {
+        const functionCall = () => fn.apply(this, arguments);
+        clearTimeout(timeout);
+        timeout = setTimeout(functionCall, time);
+    };
+};
 function getScript(srcScript) {
     const inner = srcScript.innerHTML.trim();
     if (inner.startsWith('return')) {
@@ -27,6 +35,15 @@ function getScript(srcScript) {
     }
 }
 function destruct(target, prop, megaProp = 'input') {
+    let debouncers = target._debouncers;
+    if (!debouncers)
+        debouncers = target._debouncers = {};
+    let debouncer = debouncers[megaProp];
+    if (!debouncer) {
+        debouncer = debouncers[megaProp] = debounce(() => {
+            target[megaProp] = Object.assign({}, target[megaProp]);
+        }, 10);
+    }
     Object.defineProperty(target, prop, {
         get: function () {
             return this['_' + prop];
@@ -35,7 +52,8 @@ function destruct(target, prop, megaProp = 'input') {
             this['_' + prop] = val;
             if (this[megaProp]) {
                 this[megaProp][prop] = val;
-                this[megaProp] = Object.assign({}, this[megaProp]);
+                debouncer();
+                //this[megaProp] = Object.assign({}, this[megaProp]);
             }
             else {
                 this[megaProp] = { [prop]: val };

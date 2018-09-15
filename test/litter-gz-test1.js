@@ -11,19 +11,20 @@ const test = require('tape');
 function customTests(page) {
     return __awaiter(this, void 0, void 0, function* () {
         yield page.waitFor(4000);
-        const textContent = yield page.$eval('#pronouns>li#li_3', (c) => c.innerText);
+        const textContent = yield page.$eval('a', (c) => c.href);
+        console.log(textContent);
         const TapeTestRunner = {
             test: test
         };
-        TapeTestRunner.test('testing dev.html', (t) => {
-            t.equal(textContent, 'Ze');
+        TapeTestRunner.test('testing litter-gz-test.html', (t) => {
+            t.equal(textContent, 'http://www.gps-coordinates.org/my-location.php?lat=41.903878&lng=12.452818');
             t.end();
         });
     });
 }
 (() => __awaiter(this, void 0, void 0, function* () {
     yield xt.runTests({
-        path: 'demo/dev.iife.html'
+        path: 'demo/litter-gz-test.html'
     }, customTests);
 }))();
-//# sourceMappingURL=litter-g-tests.js.map
+//# sourceMappingURL=litter-gz-test1.js.map

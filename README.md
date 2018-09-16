@@ -17,10 +17,10 @@ Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal
 ## File Sizes
 
 litter-g:
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.14/build/ES6/litter-g.iife.js?compression=gzip">
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.15/build/ES6/litter-g.iife.js?compression=gzip">
 
 litter-gz:
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.14/build/ES6/litter-gz.iife.js?compression=gzip">
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.15/build/ES6/litter-gz.iife.js?compression=gzip">
 
 
 

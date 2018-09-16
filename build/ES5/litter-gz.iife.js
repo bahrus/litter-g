@@ -11,14 +11,91 @@
     customElements.define(tagName, custEl);
   }
 
+  function getHost(el) {
+    var parent = el;
+
+    while (parent = parent.parentNode) {
+      if (parent.nodeType === 11) {
+        return parent['host'];
+      } else if (parent.tagName === 'BODY') {
+        return null;
+      }
+    }
+
+    return null;
+  }
+
+  function observeCssSelector(superClass) {
+    var eventNames = ["animationstart", "MSAnimationStart", "webkitAnimationStart"];
+    return (
+      /*#__PURE__*/
+      function (_superClass) {
+        babelHelpers.inherits(_class, _superClass);
+
+        function _class() {
+          babelHelpers.classCallCheck(this, _class);
+          return babelHelpers.possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+        }
+
+        babelHelpers.createClass(_class, [{
+          key: "addCSSListener",
+          value: function addCSSListener(id, targetSelector, insertListener) {
+            var _this = this;
+
+            // See https://davidwalsh.name/detect-node-insertion
+            if (this._boundInsertListener) return;
+            var styleInner =
+            /* css */
+            "\n            @keyframes ".concat(id, " {\n                from {\n                    opacity: 0.99;\n                }\n                to {\n                    opacity: 1;\n                }\n            }\n    \n            ").concat(targetSelector, "{\n                animation-duration: 0.001s;\n                animation-name: ").concat(id, ";\n            }\n            ");
+            var style = document.createElement('style');
+            style.innerHTML = styleInner;
+            var host = getHost(this);
+
+            if (host !== null) {
+              host.shadowRoot.appendChild(style);
+            } else {
+              document.body.appendChild(style);
+            }
+
+            this._boundInsertListener = insertListener.bind(this);
+            var container = host ? host.shadowRoot : document;
+            eventNames.forEach(function (name) {
+              container.addEventListener(name, _this._boundInsertListener, false);
+            }); // container.addEventListener("animationstart", this._boundInsertListener, false); // standard + firefox
+            // container.addEventListener("MSAnimationStart", this._boundInsertListener, false); // IE
+            // container.addEventListener("webkitAnimationStart", this._boundInsertListener, false); // Chrome + Safari
+          }
+        }, {
+          key: "disconnectedCallback",
+          value: function disconnectedCallback() {
+            var _this2 = this;
+
+            if (this._boundInsertListener) {
+              var host = getHost(this);
+              var container = host ? host.shadowRoot : document;
+              eventNames.forEach(function (name) {
+                container.removeEventListener(name, _this2._boundInsertListener);
+              }); // document.removeEventListener("animationstart", this._boundInsertListener); // standard + firefox
+              // document.removeEventListener("MSAnimationStart", this._boundInsertListener); // IE
+              // document.removeEventListener("webkitAnimationStart", this._boundInsertListener); // Chrome + Safari
+            }
+
+            if (babelHelpers.get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "disconnectedCallback", this) !== undefined) babelHelpers.get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "disconnectedCallback", this).call(this);
+          }
+        }]);
+        return _class;
+      }(superClass)
+    );
+  }
+
   var debounce = function debounce(fn, time) {
     var timeout;
     return function () {
-      var _this = this,
+      var _this3 = this,
           _arguments = arguments;
 
       var functionCall = function functionCall() {
-        return fn.apply(_this, _arguments);
+        return fn.apply(_this3, _arguments);
       };
 
       clearTimeout(timeout);
@@ -77,83 +154,6 @@
       enumerable: true,
       configurable: true
     });
-  }
-
-  function getHost(el) {
-    var parent = el;
-
-    while (parent = parent.parentNode) {
-      if (parent.nodeType === 11) {
-        return parent['host'];
-      } else if (parent.tagName === 'BODY') {
-        return null;
-      }
-    }
-
-    return null;
-  }
-
-  function observeCssSelector(superClass) {
-    var eventNames = ["animationstart", "MSAnimationStart", "webkitAnimationStart"];
-    return (
-      /*#__PURE__*/
-      function (_superClass) {
-        babelHelpers.inherits(_class, _superClass);
-
-        function _class() {
-          babelHelpers.classCallCheck(this, _class);
-          return babelHelpers.possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
-        }
-
-        babelHelpers.createClass(_class, [{
-          key: "addCSSListener",
-          value: function addCSSListener(id, targetSelector, insertListener) {
-            var _this2 = this;
-
-            // See https://davidwalsh.name/detect-node-insertion
-            if (this._boundInsertListener) return;
-            var styleInner =
-            /* css */
-            "\n            @keyframes ".concat(id, " {\n                from {\n                    opacity: 0.99;\n                }\n                to {\n                    opacity: 1;\n                }\n            }\n    \n            ").concat(targetSelector, "{\n                animation-duration: 0.001s;\n                animation-name: ").concat(id, ";\n            }\n            ");
-            var style = document.createElement('style');
-            style.innerHTML = styleInner;
-            var host = getHost(this);
-
-            if (host !== null) {
-              host.shadowRoot.appendChild(style);
-            } else {
-              document.body.appendChild(style);
-            }
-
-            this._boundInsertListener = insertListener.bind(this);
-            var container = host ? host.shadowRoot : document;
-            eventNames.forEach(function (name) {
-              container.addEventListener(name, _this2._boundInsertListener, false);
-            }); // container.addEventListener("animationstart", this._boundInsertListener, false); // standard + firefox
-            // container.addEventListener("MSAnimationStart", this._boundInsertListener, false); // IE
-            // container.addEventListener("webkitAnimationStart", this._boundInsertListener, false); // Chrome + Safari
-          }
-        }, {
-          key: "disconnectedCallback",
-          value: function disconnectedCallback() {
-            var _this3 = this;
-
-            if (this._boundInsertListener) {
-              var host = getHost(this);
-              var container = host ? host.shadowRoot : document;
-              eventNames.forEach(function (name) {
-                container.removeEventListener(name, _this3._boundInsertListener);
-              }); // document.removeEventListener("animationstart", this._boundInsertListener); // standard + firefox
-              // document.removeEventListener("MSAnimationStart", this._boundInsertListener); // IE
-              // document.removeEventListener("webkitAnimationStart", this._boundInsertListener); // Chrome + Safari
-            }
-
-            if (babelHelpers.get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "disconnectedCallback", this) !== undefined) babelHelpers.get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "disconnectedCallback", this).call(this);
-          }
-        }]);
-        return _class;
-      }(superClass)
-    );
   }
 
   var LitterG =

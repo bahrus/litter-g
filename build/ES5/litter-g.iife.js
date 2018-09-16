@@ -11,74 +11,6 @@
     customElements.define(tagName, custEl);
   }
 
-  var debounce = function debounce(fn, time) {
-    var timeout;
-    return function () {
-      var _this = this,
-          _arguments = arguments;
-
-      var functionCall = function functionCall() {
-        return fn.apply(_this, _arguments);
-      };
-
-      clearTimeout(timeout);
-      timeout = setTimeout(functionCall, time);
-    };
-  };
-
-  function getScript(srcScript) {
-    var inner = srcScript.innerHTML.trim();
-
-    if (inner.startsWith('(')) {
-      var iFatArrowPos = inner.indexOf('=>');
-      var c2del = ['(', ')', '{', '}'];
-      var lhs = inner.substr(0, iFatArrowPos);
-      c2del.forEach(function (t) {
-        return lhs = lhs.replace(t, '');
-      });
-      var rhs = inner.substr(iFatArrowPos + 2);
-      return {
-        args: lhs.split(',').map(function (s) {
-          return s.trim();
-        }),
-        body: rhs
-      };
-    } else {
-      return null;
-    }
-  }
-
-  function destruct(target, prop) {
-    var megaProp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'input';
-    var debouncers = target._debouncers;
-    if (!debouncers) debouncers = target._debouncers = {};
-    var debouncer = debouncers[megaProp];
-
-    if (!debouncer) {
-      debouncer = debouncers[megaProp] = debounce(function () {
-        target[megaProp] = Object.assign({}, target[megaProp]);
-      }, 10);
-    }
-
-    Object.defineProperty(target, prop, {
-      get: function get() {
-        return this['_' + prop];
-      },
-      set: function set(val) {
-        this['_' + prop] = val;
-
-        if (this[megaProp]) {
-          this[megaProp][prop] = val;
-          debouncer(); //this[megaProp] = Object.assign({}, this[megaProp]);
-        } else {
-          this[megaProp] = babelHelpers.defineProperty({}, prop, val);
-        }
-      },
-      enumerable: true,
-      configurable: true
-    });
-  }
-
   function getHost(el) {
     var parent = el;
 
@@ -108,7 +40,7 @@
         babelHelpers.createClass(_class, [{
           key: "addCSSListener",
           value: function addCSSListener(id, targetSelector, insertListener) {
-            var _this2 = this;
+            var _this = this;
 
             // See https://davidwalsh.name/detect-node-insertion
             if (this._boundInsertListener) return;
@@ -128,7 +60,7 @@
             this._boundInsertListener = insertListener.bind(this);
             var container = host ? host.shadowRoot : document;
             eventNames.forEach(function (name) {
-              container.addEventListener(name, _this2._boundInsertListener, false);
+              container.addEventListener(name, _this._boundInsertListener, false);
             }); // container.addEventListener("animationstart", this._boundInsertListener, false); // standard + firefox
             // container.addEventListener("MSAnimationStart", this._boundInsertListener, false); // IE
             // container.addEventListener("webkitAnimationStart", this._boundInsertListener, false); // Chrome + Safari
@@ -136,13 +68,13 @@
         }, {
           key: "disconnectedCallback",
           value: function disconnectedCallback() {
-            var _this3 = this;
+            var _this2 = this;
 
             if (this._boundInsertListener) {
               var host = getHost(this);
               var container = host ? host.shadowRoot : document;
               eventNames.forEach(function (name) {
-                container.removeEventListener(name, _this3._boundInsertListener);
+                container.removeEventListener(name, _this2._boundInsertListener);
               }); // document.removeEventListener("animationstart", this._boundInsertListener); // standard + firefox
               // document.removeEventListener("MSAnimationStart", this._boundInsertListener); // IE
               // document.removeEventListener("webkitAnimationStart", this._boundInsertListener); // Chrome + Safari
@@ -169,12 +101,12 @@
     babelHelpers.createClass(LitterG, [{
       key: "insertListener",
       value: function insertListener(e) {
-        var _this4 = this;
+        var _this3 = this;
 
         if (e.animationName === LitterG.is) {
           var target = e.target;
           setTimeout(function () {
-            _this4.registerScript(target);
+            _this3.registerScript(target);
           }, 0);
         }
       }
@@ -184,7 +116,7 @@
     }, {
       key: "commitProps",
       value: function commitProps(props, target) {
-        var _this5 = this;
+        var _this4 = this;
 
         props.forEach(function (prop) {
           var initVal = target[prop]; //TODO:  move default case into litter-gz
@@ -207,7 +139,7 @@
               break;
 
             default:
-              _this5.defGenProp(target, prop);
+              _this4.defGenProp(target, prop);
 
           }
 
@@ -240,11 +172,11 @@
     }, {
       key: "registerScript",
       value: function registerScript(target) {
-        var _this6 = this;
+        var _this5 = this;
 
         if (!target.firstElementChild) {
           setTimeout(function () {
-            _this6.registerScript(target);
+            _this5.registerScript(target);
           }, 50);
           return;
         }
@@ -270,13 +202,13 @@
     }, {
       key: "attachRenderer",
       value: function attachRenderer(target, count, scriptInfo) {
-        var _this7 = this;
+        var _this6 = this;
 
         var renderer = LitterG['fn_' + count];
 
         if (renderer === undefined) {
           setTimeout(function () {
-            _this7.attachRenderer(target, count, scriptInfo);
+            _this6.attachRenderer(target, count, scriptInfo);
           }, 10);
           return;
         }

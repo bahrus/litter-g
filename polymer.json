@@ -3,7 +3,8 @@
     "litter-g.js",
     "litter-g.iife.js",
     "litter-gz.js",
-    "litter-gz.iife.js"
+    "litter-gz.iife.js",
+    "demo/index.html"
   ],
   "lint": {
     "rules": [

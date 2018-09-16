@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <litter-gz></litter-gz>
+        <ul data-lit="" data-input="[&quot;He&quot;, &quot;She&quot;, &quot;They&quot;, &quot;Ze&quot;]">
+                <script nomodule="">function _templateObject2_ccf06590b9c611e8b78c13ea2ccc2999() {
+  var data = babelHelpers.taggedTemplateLiteral(["<li>", "</li>"]);
+
+  _templateObject2_ccf06590b9c611e8b78c13ea2ccc2999 = function _templateObject2_ccf06590b9c611e8b78c13ea2ccc2999() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject_ccf06590b9c611e8b78c13ea2ccc2999() {
+  var data = babelHelpers.taggedTemplateLiteral(["", ""]);
+
+  _templateObject_ccf06590b9c611e8b78c13ea2ccc2999 = function _templateObject_ccf06590b9c611e8b78c13ea2ccc2999() {
+    return data;
+  };
+
+  return data;
+}
+
+html(_templateObject_ccf06590b9c611e8b78c13ea2ccc2999(), input.map(function (i) {
+  return html(_templateObject2_ccf06590b9c611e8b78c13ea2ccc2999(), i);
+}));</script>
+        </ul>
+
+        <div>Latutide: </div>
+        <wired-input aria-placeholder="Latitude" placeholder="Latitude" value="41.903878"></wired-input>
+        <p-d on="input" to="#long_lat{latitude}" m="1"></p-d>
+
+        <div>Longitude:</div>
+        <wired-input aria-placeholder="Longitude" placholder="Longitude" data-="" value="12.452818"></wired-input>
+        <p-d on="input" to="#long_lat{longitude}" m="1"></p-d>
+        
+        <div data-lit="" id="long_lat">
+            <script nomodule="">function _templateObject_ccf1ec30b9c611e8b78c13ea2ccc2999() {
+  var data = babelHelpers.taggedTemplateLiteral(["\n                    <a href=\"http://www.gps-coordinates.org/my-location.php?lat=", "&lng=", "\" target=\"_blank\">\n                        (", ",", ")\n                    </a> \n                "]);
+
+  _templateObject_ccf1ec30b9c611e8b78c13ea2ccc2999 = function _templateObject_ccf1ec30b9c611e8b78c13ea2ccc2999() {
+    return data;
+  };
+
+  return data;
+}
+
+(function (_ref) {
+  var latitude = _ref.latitude,
+      longitude = _ref.longitude;
+  return html(_templateObject_ccf1ec30b9c611e8b78c13ea2ccc2999(), latitude, longitude, latitude, longitude);
+});</script>
+        </div>
+
+
+        <style>
+            .fieldInput{
+                display:flex;
+                flex-direction: row;
+            }
+        </style>
+        <!-- <script type="module" src="https://unpkg.com/litter-g@0.0.13/litter-gz.iife.js?module"></script> -->
+        <script type="module" src="../litter-gz.iife.js"></script>
+        <script type="module" src="https://unpkg.com/wired-elements@latest/dist/wired-elements.bundled.min.js"></script>
+        <script type="module" src="https://unpkg.com/p-d.p-u@0.0.61/p-d.p-u.js"></script>
+        <script type="module" src="https://unpkg.com/in-the-node@0.0.5/in-the-node.iife.js"></script>
+    </div>
+
+
+</body></html>

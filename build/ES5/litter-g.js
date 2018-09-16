@@ -99,7 +99,7 @@ function (_observeCssSelector) {
       var base = 'https://cdn.jsdelivr.net/npm/lit-html/';
       var importPaths = "\n        import {html, render} from '".concat(base, "lit-html.js';\n        import {repeat} from '").concat(base, "lib/repeat.js';\n");
       var importAttr = this.getAttribute('import');
-      if (importAttr) importPaths = self[importAttr];
+      if (importAttr !== null) importPaths = self[importAttr];
       var count = LitterG._count++;
       var scriptInfo = this.getScript(srcS);
       var args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : 'input';

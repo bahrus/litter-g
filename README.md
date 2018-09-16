@@ -4,15 +4,24 @@
 
 # litter-g
 
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.12/build/ES6/litter-g.iife.js?compression=gzip">
+## Use Case
 
-Use case:  litter-g hopes to improve on the ergonomics of a similar component, [xtal-method](https://www.webcomponents.org/element/xtal-method).  Both components are meant for applications that aren't necessarily built on a JavaScript-centric paradigm.  Applications that may be built using a server-centric framework, which just wants to strategically shake some JavaScript pixie dust as needed.  Or maybe applications that are built using some "old" framework like Cold Fusion, but want to slowly convert into something more modern. 
-
-The use case is spelled out quite nicely by [React's introductory pages](https://reactjs.org/docs/add-react-to-a-website.html):
+The use case for litter-g is spelled out quite nicely by [React's introductory pages](https://reactjs.org/docs/add-react-to-a-website.html):
 
 >The majority of websites aren’t, and don’t need to be, single-page apps. With a few lines of code and no build tooling, try React in a small part of your website. You can then either gradually expand its presence, or keep it contained to a few dynamic widgets.
 
 In one of their [examples](https://raw.githubusercontent.com/reactjs/reactjs.org/master/static/html/single-file-example.html) they show how you can use React inside a script tag.  litter-g does something similar, but with lit-html.
+
+Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal-method](https://www.webcomponents.org/element/xtal-method).  Both components are meant for applications that aren't necessarily built on a JavaScript-centric paradigm.  Applications that may be built using a server-centric framework, which just wants to strategically shake some JavaScript pixie dust as needed.  Or maybe applications that are built using some "old" framework like Cold Fusion, but want to slowly convert into something more modern. 
+
+## File Sizes
+
+litter-g:
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.14/build/ES6/litter-g.iife.js?compression=gzip">
+
+litter-gz:
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.14/build/ES6/litter-gz.iife.js?compression=gzip">
+
 
 
 ## Syntax
@@ -46,7 +55,7 @@ litter-g attaches a lit renderer property to any DOM element in its ShadowDOM re
                     html`${input.map((i) => html`<li>${i}</li>`)}`
                 </script>
         </ul>
-        <script type="module" src="https://unpkg.com/litter-g@0.0.5/litter-g.js?module"></script>
+        <script type="module" src="https://unpkg.com/litter-g@0.0.14/litter-g.js?module"></script>
     </div>
   </template>
 </custom-element-demo>
@@ -92,7 +101,7 @@ Sometimes we want a ui element to depend on more than one input parameter.  To d
 ...
 <div data-lit>
     <script nomodule>
-        return ({latitude, longitude}) => html`
+        ({latitude, longitude}) => html`
             <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
                 (${latitude},${longitude})
             </a> 
@@ -105,6 +114,12 @@ and does the following:
 
 1)  Adds properties latitude, longitude to the div DOM element.   
 2)  Updates the input property any time either of those properties change (with a little debouncing), thus causing lit-html to rerender.
+
+**NOTE:**  Previous versions specified that the script must start with the keyword return.  This was done simply to eliminate an annoying squiggly red underline VS Code was applying to the syntax.  VS Code isn't even consistent about this.  More importantly, adding the extra usesless return statement caused the polymer serve web server to complain. 
+
+## IE11 (This section must be read while listening to [this melody](https://youtu.be/YVi6ZYzD_Gc?t=275) )
+
+The fact that IE11 doesn't support templates is clearly an issue with using this component.  Some build tools, such as Polymer build, make a valiant attempt to convert template literals into ES5 syntax.  Further adjustments will need to be made by litter-g to make the end product work in IE11.  More on that to come. 
 
 ## Viewing Your Element
 

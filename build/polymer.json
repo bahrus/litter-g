@@ -6,6 +6,7 @@
     "litter-g.iife.js",
     "litter-gz.js",
     "litter-gz.iife.js",
+    "demo/index.html",
     "index.html"
   ],
   "extraDependencies": [

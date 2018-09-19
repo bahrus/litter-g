@@ -77,6 +77,39 @@ function observeCssSelector(superClass) {
         }
     };
 }
+function attachScriptFn(tagName, target, prop, body) {
+    const constructor = customElements.get(tagName);
+    const count = constructor._count++;
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.innerHTML = `
+${body}
+const constructor = customElements.get('${tagName}');
+constructor['fn_' + ${count}] = __fn;
+`;
+    document.head.appendChild(script);
+    attachFn(constructor, count, target, prop);
+}
+function attachFn(constructor, count, target, prop) {
+    const Fn = constructor['fn_' + count];
+    if (Fn === undefined) {
+        setTimeout(() => {
+            attachFn(constructor, count, target, prop);
+        }, 10);
+        return;
+    }
+    target[prop] = Fn;
+}
+function getDynScript(el, callBack) {
+    el._script = el.querySelector('script');
+    if (!el._script) {
+        setTimeout(() => {
+            getDynScript(el, callBack);
+        }, 10);
+        return;
+    }
+    callBack();
+}
 const debounce = (fn, time) => {
     let timeout;
     return function () {
@@ -88,15 +121,21 @@ const debounce = (fn, time) => {
 function getScript(srcScript) {
     const inner = srcScript.innerHTML.trim();
     if (inner.startsWith('(')) {
-        const iFatArrowPos = inner.indexOf('=>');
-        const c2del = ['(', ')', '{', '}'];
-        let lhs = inner.substr(0, iFatArrowPos);
-        c2del.forEach(t => lhs = lhs.replace(t, ''));
-        const rhs = inner.substr(iFatArrowPos + 2);
-        return {
-            args: lhs.split(',').map(s => s.trim()),
-            body: rhs,
-        };
+        const ied = self['xtal_latx_ied']; //IE11
+        if (ied !== undefined) {
+            return ied(inner);
+        }
+        else {
+            const iFatArrowPos = inner.indexOf('=>');
+            const c2del = ['(', ')', '{', '}'];
+            let lhs = inner.substr(0, iFatArrowPos);
+            c2del.forEach(t => lhs = lhs.replace(t, ''));
+            const rhs = inner.substr(iFatArrowPos + 2);
+            return {
+                args: lhs.split(',').map(s => s.trim()),
+                body: rhs,
+            };
+        }
     }
     else {
         return null;
@@ -137,7 +176,10 @@ class LitterG extends observeCssSelector(HTMLElement) {
         if (e.animationName === LitterG.is) {
             const target = e.target;
             setTimeout(() => {
-                this.registerScript(target);
+                getDynScript(target, () => {
+                    this.registerScript(target);
+                });
+                //this.registerScript(target);
             }, 0);
         }
     }
@@ -188,16 +230,16 @@ class LitterG extends observeCssSelector(HTMLElement) {
             body: srcScript.innerHTML,
         };
     }
+    // _script!: HTMLScriptElement;
     registerScript(target) {
-        if (!target.firstElementChild) {
-            setTimeout(() => {
-                this.registerScript(target);
-            }, 50);
-            return;
-        }
-        const srcS = target.firstElementChild;
-        if (srcS.localName !== 'script')
-            throw "Expecting script child";
+        // if(!target.firstElementChild){
+        //     setTimeout(() =>{
+        //         this.registerScript(target);
+        //     }, 50);
+        //     return;
+        // }
+        //const srcS = target.firstElementChild as HTMLScriptElement;
+        //if(srcS!.localName !== 'script') throw "Expecting script child";
         const script = document.createElement('script');
         const base = 'https://cdn.jsdelivr.net/npm/lit-html/';
         let importPaths = `
@@ -208,7 +250,7 @@ class LitterG extends observeCssSelector(HTMLElement) {
         if (importAttr !== null)
             importPaths = self[importAttr];
         const count = LitterG._count++;
-        const scriptInfo = this.getScript(srcS);
+        const scriptInfo = this.getScript(target._script);
         const args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : 'input';
         const text = /* js */ `
 ${importPaths}

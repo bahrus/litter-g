@@ -1,5 +1,6 @@
 import {observeCssSelector} from 'xtal-latx/observeCssSelector.js';
-import {define} from 'xtal-latx/define.js'
+import {define} from 'xtal-latx/define.js';
+import {attachScriptFn, getDynScript} from 'xtal-latx/attachScriptFn.js';
 export interface IScriptInfo{
     args: string[],
     body: string,
@@ -12,7 +13,10 @@ export class LitterG extends observeCssSelector(HTMLElement){
         if (e.animationName === LitterG.is) {
             const target = e.target;
             setTimeout(() =>{
-                this.registerScript(target);
+                getDynScript(target, () =>{
+                    this.registerScript(target);
+                })
+                //this.registerScript(target);
             }, 0)
         }
     }
@@ -64,16 +68,17 @@ export class LitterG extends observeCssSelector(HTMLElement){
             body: srcScript.innerHTML,
         };
     }
+   // _script!: HTMLScriptElement;
     registerScript(target: HTMLElement){
         
-        if(!target.firstElementChild){
-            setTimeout(() =>{
-                this.registerScript(target);
-            }, 50);
-            return;
-        }
-        const srcS = target.firstElementChild as HTMLScriptElement;
-        if(srcS!.localName !== 'script') throw "Expecting script child";
+        // if(!target.firstElementChild){
+        //     setTimeout(() =>{
+        //         this.registerScript(target);
+        //     }, 50);
+        //     return;
+        // }
+        //const srcS = target.firstElementChild as HTMLScriptElement;
+        //if(srcS!.localName !== 'script') throw "Expecting script child";
         
         const script = document.createElement('script');
         const base = 'https://cdn.jsdelivr.net/npm/lit-html/';
@@ -84,7 +89,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
         const importAttr = this.getAttribute('import');
         if(importAttr !== null) importPaths = (<any>self)[importAttr];
         const count = LitterG._count++;
-        const scriptInfo = this.getScript(srcS);
+        const scriptInfo = this.getScript((<any>target)._script);
         const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : 'input';
         const text = /* js */`
 ${importPaths}

@@ -129,7 +129,7 @@ class LitterG extends observeCssSelector(HTMLElement) {
             const initVal = target[prop];
             //TODO:  move default case into litter-gz
             switch (prop) {
-                case 'render':
+                case 'renderer':
                 case 'input':
                 case 'target':
                     Object.defineProperty(target, prop, {
@@ -155,7 +155,7 @@ class LitterG extends observeCssSelector(HTMLElement) {
     addProps(target, scriptInfo) {
         if (target.dataset.addedProps)
             return;
-        this.commitProps(scriptInfo.args.concat('render', 'input', 'target'), target);
+        this.commitProps(scriptInfo.args.concat('renderer', 'input', 'target'), target);
         target.dataset.addedProps = 'true';
         if (!target.input) {
             const inp = target.dataset.input;
@@ -170,17 +170,7 @@ class LitterG extends observeCssSelector(HTMLElement) {
             body: srcScript.innerHTML,
         };
     }
-    // _script!: HTMLScriptElement;
     registerScript(target) {
-        // if(!target.firstElementChild){
-        //     setTimeout(() =>{
-        //         this.registerScript(target);
-        //     }, 50);
-        //     return;
-        // }
-        //const srcS = target.firstElementChild as HTMLScriptElement;
-        //if(srcS!.localName !== 'script') throw "Expecting script child";
-        const script = document.createElement('script');
         const base = 'https://cdn.jsdelivr.net/npm/lit-html/';
         let importPaths = `
         import {html, render} from '${base}lit-html.js';
@@ -196,25 +186,12 @@ class LitterG extends observeCssSelector(HTMLElement) {
 ${importPaths}
 const litterG = customElements.get('litter-g');
 const litter = (${args}) => ${scriptInfo.body};
-litterG['fn_' + ${count}] = function(input, target){
+const __fn = function(input, target){
     render(litter(input), target);
-}
+}    
 `;
-        script.type = 'module';
-        script.innerHTML = text;
-        document.head.appendChild(script);
-        this.attachRenderer(target, count, scriptInfo);
-    }
-    attachRenderer(target, count, scriptInfo) {
-        const renderer = LitterG['fn_' + count];
-        if (renderer === undefined) {
-            setTimeout(() => {
-                this.attachRenderer(target, count, scriptInfo);
-            }, 10);
-            return;
-        }
-        target.renderer = renderer;
         this.addProps(target, scriptInfo);
+        attachScriptFn(LitterG.is, target, 'renderer', text);
     }
     connectedCallback() {
         this.style.display = 'none';

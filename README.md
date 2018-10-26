@@ -117,9 +117,7 @@ and does the following:
 
 **NOTE:**  Previous versions specified that the script must start with the keyword return.  This was done simply to eliminate an annoying squiggly red underline VS Code was applying to the syntax.  VS Code isn't even consistent about this.  More importantly, adding the extra usesless return statement caused the polymer serve web server to complain. 
 
-## IE11 (This section must be read while listening to [this melody](https://youtu.be/YVi6ZYzD_Gc?t=275) )
-
-The fact that IE11 doesn't support templates is clearly an issue with using this component.  Some build tools, such as Polymer build, make a valiant attempt to convert template literals into ES5 syntax.  Further adjustments will need to be made by litter-g to make the end product work in IE11.  More on that to come. 
+##   [IE11 Support](https://youtu.be/YVi6ZYzD_Gc?t=275) 
 
 ## Viewing Your Element
 

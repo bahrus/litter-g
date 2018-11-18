@@ -12,17 +12,17 @@
     <litter-gz></litter-gz>
 
     <div data-lit id="long_lat">
-            <script nomodule>
-                ({latitude, longitude}) => html`
-                    <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
-                        (${latitude},${longitude})
-                    </a> 
-                `;
-            </script>
+        <script nomodule>
+            tr = ({latitude, longitude}) => html`
+                <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
+                    (${latitude},${longitude})
+                </a> 
+            `;
+        </script>
     </div>
 
 
-    <script type="module" src="../litter-gz.iife.js"></script>
+    <script type="module" src="../dist/litter-gz.iife.js"></script>
     <script>
         long_lat.latitude = 41.903878;
         long_lat.longitude = 12.452818;

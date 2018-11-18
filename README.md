@@ -17,10 +17,10 @@ Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal
 ## File Sizes
 
 litter-g:
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.15/build/ES6/litter-g.iife.js?compression=gzip">
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.17/dist/litter-g.iife.min.js?compression=gzip">
 
 litter-gz:
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.15/build/ES6/litter-gz.iife.js?compression=gzip">
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.17/dist/litter-gz.iife.js?compression=gzip">
 
 
 
@@ -101,7 +101,7 @@ Sometimes we want a ui element to depend on more than one input parameter.  To d
 ...
 <div data-lit>
     <script nomodule>
-        ({latitude, longitude}) => html`
+        tr = ({latitude, longitude}) => html`
             <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
                 (${latitude},${longitude})
             </a> 
@@ -115,7 +115,7 @@ and does the following:
 1)  Adds properties latitude, longitude to the div DOM element.   
 2)  Updates the input property any time either of those properties change (with a little debouncing), thus causing lit-html to rerender.
 
-**NOTE:**  Previous versions specified that the script must start with the keyword return.  This was done simply to eliminate an annoying squiggly red underline VS Code was applying to the syntax.  VS Code isn't even consistent about this.  More importantly, adding the extra usesless return statement caused the polymer serve web server to complain. 
+**NOTE:** The "tr = " is optional text.  This allows VSCode to provide intellisense on the expression without giving syntax errors by the polymer server (possibly caused by how Babel interprets the text.)   It stands for template result.
 
 ##   [IE11 Support](https://youtu.be/YVi6ZYzD_Gc?t=275) 
 

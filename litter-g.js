@@ -74,7 +74,6 @@ export class LitterG extends observeCssSelector(HTMLElement) {
         const scriptInfo = this.getScript(target._script);
         const args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : 'input';
         const text = /* js */ `
-${importPaths}
 const litterG = customElements.get('litter-g');
 const litter = (${args}) => ${scriptInfo.body};
 const __fn = function(input, target){
@@ -82,7 +81,7 @@ const __fn = function(input, target){
 }    
 `;
         this.addProps(target, scriptInfo);
-        attachScriptFn(LitterG.is, target, 'renderer', text);
+        attachScriptFn(LitterG.is, target, 'renderer', text, importPaths);
     }
     connectedCallback() {
         this.style.display = 'none';

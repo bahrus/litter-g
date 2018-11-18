@@ -77,18 +77,27 @@ function observeCssSelector(superClass) {
         }
     };
 }
-function attachScriptFn(tagName, target, prop, body) {
+function attachScriptFn(tagName, target, prop, body, imports) {
     const constructor = customElements.get(tagName);
     const count = constructor._count++;
     const script = document.createElement('script');
-    script.type = 'module';
+    if (supportsStaticImport()) {
+        script.type = 'module';
+    }
     script.innerHTML = `
+${imports}
+(function () {
 ${body}
 const constructor = customElements.get('${tagName}');
 constructor['fn_' + ${count}] = __fn;
+})();
 `;
     document.head.appendChild(script);
     attachFn(constructor, count, target, prop);
+}
+function supportsStaticImport() {
+    const script = document.createElement('script');
+    return 'noModule' in script;
 }
 function attachFn(constructor, count, target, prop) {
     const Fn = constructor['fn_' + count];
@@ -120,7 +129,8 @@ const debounce = (fn, time) => {
 };
 function getScript(srcScript) {
     const inner = srcScript.innerHTML.trim();
-    if (inner.startsWith('(')) {
+    const trEq = 'tr = ';
+    if (inner.startsWith('(') || inner.startsWith(trEq)) {
         const ied = self['xtal_latx_ied']; //IE11
         if (ied !== undefined) {
             return ied(inner);
@@ -128,7 +138,7 @@ function getScript(srcScript) {
         else {
             const iFatArrowPos = inner.indexOf('=>');
             const c2del = ['(', ')', '{', '}'];
-            let lhs = inner.substr(0, iFatArrowPos);
+            let lhs = inner.substr(0, iFatArrowPos).replace(trEq, '').trim();
             c2del.forEach(t => lhs = lhs.replace(t, ''));
             const rhs = inner.substr(iFatArrowPos + 2);
             return {
@@ -149,7 +159,7 @@ function destruct(target, prop, megaProp = 'input') {
     if (!debouncer) {
         debouncer = debouncers[megaProp] = debounce(() => {
             target[megaProp] = Object.assign({}, target[megaProp]);
-        }, 10);
+        }, 10); //use task sceduler?
     }
     Object.defineProperty(target, prop, {
         get: function () {
@@ -243,7 +253,6 @@ class LitterG extends observeCssSelector(HTMLElement) {
         const scriptInfo = this.getScript(target._script);
         const args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : 'input';
         const text = /* js */ `
-${importPaths}
 const litterG = customElements.get('litter-g');
 const litter = (${args}) => ${scriptInfo.body};
 const __fn = function(input, target){
@@ -251,7 +260,7 @@ const __fn = function(input, target){
 }    
 `;
         this.addProps(target, scriptInfo);
-        attachScriptFn(LitterG.is, target, 'renderer', text);
+        attachScriptFn(LitterG.is, target, 'renderer', text, importPaths);
     }
     connectedCallback() {
         this.style.display = 'none';

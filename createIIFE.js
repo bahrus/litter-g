@@ -4,5 +4,5 @@ const base = [xtal + 'define.js', xtal + 'getHost.js', xtal + 'observeCssSelecto
 const litterg = base.concat('litter-g.js');
 const destruct = base.concat('node_modules/xtal-latx/debounce.js', 'node_modules/xtal-latx/destruct.js')
 const littergz = destruct.concat('litter-g.js', 'litter-gz.js');
-jiife.processFiles(litterg, 'litter-g.iife.js');
-jiife.processFiles(littergz, 'litter-gz.iife.js');
+jiife.processFiles(litterg, 'dist/litter-g.iife.js');
+jiife.processFiles(littergz, 'dist/litter-gz.iife.js');

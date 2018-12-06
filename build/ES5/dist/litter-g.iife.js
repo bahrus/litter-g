@@ -34,7 +34,7 @@
 
         function _class() {
           babelHelpers.classCallCheck(this, _class);
-          return babelHelpers.possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+          return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(_class).apply(this, arguments));
         }
 
         babelHelpers.createClass(_class, [{
@@ -80,12 +80,57 @@
               // document.removeEventListener("webkitAnimationStart", this._boundInsertListener); // Chrome + Safari
             }
 
-            if (babelHelpers.get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "disconnectedCallback", this) !== undefined) babelHelpers.get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "disconnectedCallback", this).call(this);
+            if (babelHelpers.get(babelHelpers.getPrototypeOf(_class.prototype), "disconnectedCallback", this) !== undefined) babelHelpers.get(babelHelpers.getPrototypeOf(_class.prototype), "disconnectedCallback", this).call(this);
           }
         }]);
         return _class;
       }(superClass)
     );
+  }
+
+  function attachScriptFn(tagName, target, prop, body, imports) {
+    var constructor = customElements.get(tagName);
+    var count = constructor._count++;
+    var script = document.createElement('script');
+
+    if (supportsStaticImport()) {
+      script.type = 'module';
+    }
+
+    script.innerHTML = "\n".concat(imports, "\n(function () {\n").concat(body, "\nconst constructor = customElements.get('").concat(tagName, "');\nconstructor['fn_' + ").concat(count, "] = __fn;\n})();\n");
+    document.head.appendChild(script);
+    attachFn(constructor, count, target, prop);
+  }
+
+  function supportsStaticImport() {
+    var script = document.createElement('script');
+    return 'noModule' in script;
+  }
+
+  function attachFn(constructor, count, target, prop) {
+    var Fn = constructor['fn_' + count];
+
+    if (Fn === undefined) {
+      setTimeout(function () {
+        attachFn(constructor, count, target, prop);
+      }, 10);
+      return;
+    }
+
+    target[prop] = Fn;
+  }
+
+  function getDynScript(el, callBack) {
+    el._script = el.querySelector('script');
+
+    if (!el._script) {
+      setTimeout(function () {
+        getDynScript(el, callBack);
+      }, 10);
+      return;
+    }
+
+    callBack();
   }
 
   var LitterG =
@@ -95,7 +140,7 @@
 
     function LitterG() {
       babelHelpers.classCallCheck(this, LitterG);
-      return babelHelpers.possibleConstructorReturn(this, (LitterG.__proto__ || Object.getPrototypeOf(LitterG)).apply(this, arguments));
+      return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(LitterG).apply(this, arguments));
     }
 
     babelHelpers.createClass(LitterG, [{
@@ -106,7 +151,9 @@
         if (e.animationName === LitterG.is) {
           var target = e.target;
           setTimeout(function () {
-            _this3.registerScript(target);
+            getDynScript(target, function () {
+              _this3.registerScript(target);
+            }); //this.registerScript(target);
           }, 0);
         }
       }
@@ -122,7 +169,7 @@
           var initVal = target[prop]; //TODO:  move default case into litter-gz
 
           switch (prop) {
-            case 'render':
+            case 'renderer':
             case 'input':
             case 'target':
               Object.defineProperty(target, prop, {
@@ -150,7 +197,7 @@
       key: "addProps",
       value: function addProps(target, scriptInfo) {
         if (target.dataset.addedProps) return;
-        this.commitProps(scriptInfo.args.concat('render', 'input', 'target'), target);
+        this.commitProps(scriptInfo.args.concat('renderer', 'input', 'target'), target);
         target.dataset.addedProps = 'true';
 
         if (!target.input) {
@@ -172,49 +219,18 @@
     }, {
       key: "registerScript",
       value: function registerScript(target) {
-        var _this5 = this;
-
-        if (!target.firstElementChild) {
-          setTimeout(function () {
-            _this5.registerScript(target);
-          }, 50);
-          return;
-        }
-
-        var srcS = target.firstElementChild;
-        if (srcS.localName !== 'script') throw "Expecting script child";
-        var script = document.createElement('script');
         var base = 'https://cdn.jsdelivr.net/npm/lit-html/';
         var importPaths = "\n        import {html, render} from '".concat(base, "lit-html.js';\n        import {repeat} from '").concat(base, "lib/repeat.js';\n");
         var importAttr = this.getAttribute('import');
         if (importAttr !== null) importPaths = self[importAttr];
         var count = LitterG._count++;
-        var scriptInfo = this.getScript(srcS);
+        var scriptInfo = this.getScript(target._script);
         var args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : 'input';
         var text =
         /* js */
-        "\n".concat(importPaths, "\nconst litterG = customElements.get('litter-g');\nconst litter = (").concat(args, ") => ").concat(scriptInfo.body, ";\nlitterG['fn_' + ").concat(count, "] = function(input, target){\n    render(litter(input), target);\n}\n");
-        script.type = 'module';
-        script.innerHTML = text;
-        document.head.appendChild(script);
-        this.attachRenderer(target, count, scriptInfo);
-      }
-    }, {
-      key: "attachRenderer",
-      value: function attachRenderer(target, count, scriptInfo) {
-        var _this6 = this;
-
-        var renderer = LitterG['fn_' + count];
-
-        if (renderer === undefined) {
-          setTimeout(function () {
-            _this6.attachRenderer(target, count, scriptInfo);
-          }, 10);
-          return;
-        }
-
-        target.renderer = renderer;
+        "\nconst litterG = customElements.get('litter-g');\nconst litter = (".concat(args, ") => ").concat(scriptInfo.body, ";\nconst __fn = function(input, target){\n    render(litter(input), target);\n}    \n");
         this.addProps(target, scriptInfo);
+        attachScriptFn(LitterG.is, target, 'renderer', text, importPaths);
       }
     }, {
       key: "connectedCallback",

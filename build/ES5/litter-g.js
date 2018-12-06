@@ -1,5 +1,6 @@
 import { observeCssSelector } from "./node_modules/xtal-latx/observeCssSelector.js";
 import { define } from "./node_modules/xtal-latx/define.js";
+import { attachScriptFn, getDynScript } from "./node_modules/xtal-latx/attachScriptFn.js";
 export var LitterG =
 /*#__PURE__*/
 function (_observeCssSelector) {
@@ -7,7 +8,7 @@ function (_observeCssSelector) {
 
   function LitterG() {
     babelHelpers.classCallCheck(this, LitterG);
-    return babelHelpers.possibleConstructorReturn(this, (LitterG.__proto__ || Object.getPrototypeOf(LitterG)).apply(this, arguments));
+    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(LitterG).apply(this, arguments));
   }
 
   babelHelpers.createClass(LitterG, [{
@@ -18,7 +19,9 @@ function (_observeCssSelector) {
       if (e.animationName === LitterG.is) {
         var target = e.target;
         setTimeout(function () {
-          _this.registerScript(target);
+          getDynScript(target, function () {
+            _this.registerScript(target);
+          }); //this.registerScript(target);
         }, 0);
       }
     }
@@ -34,7 +37,7 @@ function (_observeCssSelector) {
         var initVal = target[prop]; //TODO:  move default case into litter-gz
 
         switch (prop) {
-          case 'render':
+          case 'renderer':
           case 'input':
           case 'target':
             Object.defineProperty(target, prop, {
@@ -62,7 +65,7 @@ function (_observeCssSelector) {
     key: "addProps",
     value: function addProps(target, scriptInfo) {
       if (target.dataset.addedProps) return;
-      this.commitProps(scriptInfo.args.concat('render', 'input', 'target'), target);
+      this.commitProps(scriptInfo.args.concat('renderer', 'input', 'target'), target);
       target.dataset.addedProps = 'true';
 
       if (!target.input) {
@@ -84,49 +87,18 @@ function (_observeCssSelector) {
   }, {
     key: "registerScript",
     value: function registerScript(target) {
-      var _this3 = this;
-
-      if (!target.firstElementChild) {
-        setTimeout(function () {
-          _this3.registerScript(target);
-        }, 50);
-        return;
-      }
-
-      var srcS = target.firstElementChild;
-      if (srcS.localName !== 'script') throw "Expecting script child";
-      var script = document.createElement('script');
       var base = 'https://cdn.jsdelivr.net/npm/lit-html/';
       var importPaths = "\n        import {html, render} from '".concat(base, "lit-html.js';\n        import {repeat} from '").concat(base, "lib/repeat.js';\n");
       var importAttr = this.getAttribute('import');
       if (importAttr !== null) importPaths = self[importAttr];
       var count = LitterG._count++;
-      var scriptInfo = this.getScript(srcS);
+      var scriptInfo = this.getScript(target._script);
       var args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : 'input';
       var text =
       /* js */
-      "\n".concat(importPaths, "\nconst litterG = customElements.get('litter-g');\nconst litter = (").concat(args, ") => ").concat(scriptInfo.body, ";\nlitterG['fn_' + ").concat(count, "] = function(input, target){\n    render(litter(input), target);\n}\n");
-      script.type = 'module';
-      script.innerHTML = text;
-      document.head.appendChild(script);
-      this.attachRenderer(target, count, scriptInfo);
-    }
-  }, {
-    key: "attachRenderer",
-    value: function attachRenderer(target, count, scriptInfo) {
-      var _this4 = this;
-
-      var renderer = LitterG['fn_' + count];
-
-      if (renderer === undefined) {
-        setTimeout(function () {
-          _this4.attachRenderer(target, count, scriptInfo);
-        }, 10);
-        return;
-      }
-
-      target.renderer = renderer;
+      "\nconst litterG = customElements.get('litter-g');\nconst litter = (".concat(args, ") => ").concat(scriptInfo.body, ";\nconst __fn = function(input, target){\n    render(litter(input), target);\n}    \n");
       this.addProps(target, scriptInfo);
+      attachScriptFn(LitterG.is, target, 'renderer', text, importPaths);
     }
   }, {
     key: "connectedCallback",

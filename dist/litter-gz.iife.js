@@ -127,10 +127,10 @@ const debounce = (fn, time) => {
         timeout = setTimeout(functionCall, time);
     };
 };
-function getScript(srcScript) {
+function getScript(srcScript, ignore) {
     const inner = srcScript.innerHTML.trim();
-    const trEq = 'tr = ';
-    if (inner.startsWith('(') || inner.startsWith(trEq)) {
+    //const trEq = 'tr = ';
+    if (inner.startsWith('(') || inner.startsWith(ignore)) {
         const ied = self['xtal_latx_ied']; //IE11
         if (ied !== undefined) {
             return ied(inner);
@@ -138,7 +138,7 @@ function getScript(srcScript) {
         else {
             const iFatArrowPos = inner.indexOf('=>');
             const c2del = ['(', ')', '{', '}'];
-            let lhs = inner.substr(0, iFatArrowPos).replace(trEq, '').trim();
+            let lhs = inner.substr(0, iFatArrowPos).replace(ignore, '').trim();
             c2del.forEach(t => lhs = lhs.replace(t, ''));
             const rhs = inner.substr(iFatArrowPos + 2);
             return {
@@ -157,8 +157,8 @@ function destruct(target, prop, megaProp = 'input') {
         debouncers = target._debouncers = {};
     let debouncer = debouncers[megaProp];
     if (!debouncer) {
-        debouncer = debouncers[megaProp] = debounce(() => {
-            target[megaProp] = Object.assign({}, target[megaProp]);
+        debouncer = debouncers[megaProp] = debounce((t) => {
+            t[megaProp] = Object.assign({}, target[megaProp]);
         }, 10); //use task sceduler?
     }
     Object.defineProperty(target, prop, {
@@ -169,7 +169,7 @@ function destruct(target, prop, megaProp = 'input') {
             this['_' + prop] = val;
             if (this[megaProp]) {
                 this[megaProp][prop] = val;
-                debouncer();
+                debouncer(this);
                 //this[megaProp] = Object.assign({}, this[megaProp]);
             }
             else {
@@ -278,7 +278,7 @@ define(LitterG);
 class LitterGZ extends LitterG {
     static get is() { return 'litter-gz'; }
     getScript(srcScript) {
-        const s = getScript(srcScript);
+        const s = getScript(srcScript, 'tr = ');
         return (s === null) ? super.getScript(srcScript) : s;
     }
     defGenProp(target, prop) {

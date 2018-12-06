@@ -2,6 +2,8 @@
 
 <a href="https://nodei.co/npm/litter-g/"><img src="https://nodei.co/npm/litter-g.png"></a>
 
+
+
 # litter-g
 
 ## Use Case
@@ -17,10 +19,10 @@ Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal
 ## File Sizes
 
 litter-g:
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.17/dist/litter-g.iife.min.js?compression=gzip">
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.18/dist/litter-g.iife.min.js?compression=gzip">
 
 litter-gz:
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.17/dist/litter-gz.iife.js?compression=gzip">
+<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.18/dist/litter-gz.iife.js?compression=gzip">
 
 
 

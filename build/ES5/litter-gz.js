@@ -8,15 +8,15 @@ function (_LitterG) {
 
   function LitterGZ() {
     babelHelpers.classCallCheck(this, LitterGZ);
-    return babelHelpers.possibleConstructorReturn(this, (LitterGZ.__proto__ || Object.getPrototypeOf(LitterGZ)).apply(this, arguments));
+    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(LitterGZ).apply(this, arguments));
   }
 
   babelHelpers.createClass(LitterGZ, [{
     key: "getScript",
     value: function getScript(srcScript) {
-      var s = _getScript(srcScript);
+      var s = _getScript(srcScript, 'tr = ');
 
-      return s === null ? babelHelpers.get(LitterGZ.prototype.__proto__ || Object.getPrototypeOf(LitterGZ.prototype), "getScript", this).call(this, srcScript) : s;
+      return s === null ? babelHelpers.get(babelHelpers.getPrototypeOf(LitterGZ.prototype), "getScript", this).call(this, srcScript) : s;
     }
   }, {
     key: "defGenProp",

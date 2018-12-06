@@ -1,9 +1,9 @@
 {
   "sources":[
     "litter-g.js",
-    "litter-g.iife.js",
+    "dist/litter-g.iife.js",
     "litter-gz.js",
-    "litter-gz.iife.js",
+    "dist/litter-gz.iife.js",
     "demo/index.html"
   ],
   "lint": {
@@ -15,10 +15,6 @@
     {
       "name": "ES5",
       "js": {"minify": false, "compile": true}
-    },
-    {
-      "name": "ES6",
-      "js": {"minify": true, "compile": false}
-    }    
+    }   
   ]
 }

@@ -4,11 +4,11 @@
   "description": "Use lit-html inside an html element",
   "main": "litter-g.js",
   "dependencies": {
-    "xtal-latx": "0.0.76"
+    "xtal-latx": "0.0.83"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.0.0",
-    "jiife": "0.0.6",
+    "jiife": "0.0.9",
     "tape": "^4.9.1",
     "@types/tape": "4.2.32",
     "xtal-test": "0.0.8"

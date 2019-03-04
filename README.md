@@ -2,6 +2,7 @@
 
 <a href="https://nodei.co/npm/litter-g/"><img src="https://nodei.co/npm/litter-g.png"></a>
 
+<img src="https://badgen.net/bundlephobia/minzip/litter-g">
 
 
 # litter-g
@@ -15,16 +16,6 @@ The use case for litter-g is spelled out quite nicely by [React's introductory p
 In one of their [examples](https://raw.githubusercontent.com/reactjs/reactjs.org/master/static/html/single-file-example.html) they show how you can use React inside a script tag.  litter-g does something similar, but with lit-html.
 
 Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal-method](https://www.webcomponents.org/element/xtal-method).  Both components are meant for applications that aren't necessarily built on a JavaScript-centric paradigm.  Applications that may be built using a server-centric framework, which just wants to strategically shake some JavaScript pixie dust as needed.  Or maybe applications that are built using some "old" framework like Cold Fusion, but want to slowly convert into something more modern. 
-
-## File Sizes
-
-litter-g:
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.18/dist/litter-g.iife.min.js?compression=gzip">
-
-litter-gz:
-<img src="http://img.badgesize.io/https://unpkg.com/litter-g@0.0.18/dist/litter-gz.iife.js?compression=gzip">
-
-
 
 ## Syntax
 
@@ -44,7 +35,7 @@ The litter-g web component only affects things that happen within its ShadowDOM 
 </script>
 ```
 
-litter-g attaches a lit renderer property to any DOM element in its ShadowDOM realm, having attribute 'data-lit', based on the snippet of lit syntax contained within the script child, as shown above.  It also attaches an "input" property.  Any time the input property changes, the renderer updates the parent DOM element. Optionally, one can set the initial input property via the data-input attribute, as shown in the demo below.
+litter-g attaches a lit renderer property to any DOM element in its ShadowDOM realm, having attribute 'data-lit', based on the snippet of lit syntax contained within the script child, as shown above.  It also attaches an "_input" property.  Any time the _input property changes, the renderer updates the parent DOM element. Optionally, one can set the initial input property via the data-input attribute, as shown in the demo below.
 
 <!--
 ```
@@ -90,9 +81,9 @@ Then in your litter-g tag, specify which constant to use for imports:
 <litter-g import="litImports"></litter-g>
 ```
 
-As you can see, the "import" attribute should match the constant specified in document.head.  This will allow you to pick where the imports should come from.  
+As you can see, the "import" attribute should match the constant specified in document.head.  This will allow you to pick where the imports should come from.
 
-This strategy may be revisited as package maps gains momentum.
+Note that using this technique, one can easily use other libraries not based on lit-html.  For example, [https://medium.com/@WebReflection/lit-html-vs-hyperhtml-vs-lighterhtml-c084abfe1285](lighterhtml) ought to work out of the box.  Support from [htm](https://github.com/developit/htm#example) is planned.
 
 ## Multivariable Functions
 

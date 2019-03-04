@@ -3,6 +3,7 @@
   "version": "0.0.18",
   "description": "Use lit-html inside an html element",
   "main": "litter-g.js",
+  "module": "litter-g.js",
   "dependencies": {
     "xtal-element": "0.0.29"
   },

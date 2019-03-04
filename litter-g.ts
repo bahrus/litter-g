@@ -1,12 +1,14 @@
-import {observeCssSelector} from 'xtal-latx/observeCssSelector.js';
-import {define} from 'xtal-latx/define.js';
-import {attachScriptFn, getDynScript} from 'xtal-latx/attachScriptFn.js';
+import {observeCssSelector} from 'xtal-element/observeCssSelector.js';
+import {define} from 'xtal-element/define.js';
+import {attachScriptFn, getDynScript} from 'xtal-element/attachScriptFn.js';
 export interface IScriptInfo{
     args: string[],
     body: string,
 }
 const _input = '_input';
 const _target = '_target';
+const _renderer = '_renderer';
+
 export class LitterG extends observeCssSelector(HTMLElement){
     static get is(){return 'litter-g';}
     static _count = 0;
@@ -30,7 +32,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
             //TODO:  move default case into litter-gz
             const localSym = Symbol(prop.toString());
             switch(prop){
-                case 'renderer':
+                case _renderer:
                 case _input:
                 case _target:
                     Object.defineProperty(target, prop, {
@@ -55,12 +57,12 @@ export class LitterG extends observeCssSelector(HTMLElement){
     }
     addProps(target: any, scriptInfo: IScriptInfo){
         if(target.dataset.addedProps) return;
-        this.commitProps(scriptInfo.args.concat('renderer', _input, 'target'), target);
+        this.commitProps(scriptInfo.args.concat(_renderer, _input, _target), target);
         target.dataset.addedProps = 'true';
-        if(!target.input){
+        if(!target._input){
             const inp = target.dataset.input;
             if(inp){
-                target.input = JSON.parse(inp);
+                target._input = JSON.parse(inp);
             }
         }
 
@@ -90,7 +92,7 @@ const __fn = function(input, target){
 }    
 `;
         this.addProps(target, scriptInfo);
-        attachScriptFn(LitterG.is, target, 'renderer', text, importPaths);
+        attachScriptFn(LitterG.is, target, _renderer, text, importPaths);
         
     }
     

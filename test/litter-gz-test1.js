@@ -17,4 +17,3 @@ async function customTests(page) {
         path: 'demo/litter-gz-test.html'
     }, customTests);
 })();
-//# sourceMappingURL=litter-gz-test1.js.map

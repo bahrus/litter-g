@@ -12,4 +12,3 @@ export class LitterGZ extends LitterG {
     }
 }
 define(LitterGZ);
-//# sourceMappingURL=litter-gz.js.map

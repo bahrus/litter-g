@@ -16,4 +16,3 @@ async function customTests(page) {
         path: 'demo/dev.iife.html'
     }, customTests);
 })();
-//# sourceMappingURL=litter-g-test1.js.map

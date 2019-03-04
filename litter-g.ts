@@ -5,6 +5,8 @@ export interface IScriptInfo{
     args: string[],
     body: string,
 }
+const _input = '_input';
+const _target = '_target';
 export class LitterG extends observeCssSelector(HTMLElement){
     static get is(){return 'litter-g';}
     static _count = 0;
@@ -26,17 +28,18 @@ export class LitterG extends observeCssSelector(HTMLElement){
         props.forEach(prop =>{
             const initVal = (<any>target)[prop];
             //TODO:  move default case into litter-gz
+            const localSym = Symbol(prop.toString());
             switch(prop){
                 case 'renderer':
-                case 'input':
-                case 'target':
+                case _input:
+                case _target:
                     Object.defineProperty(target, prop, {
                         get: function () {
-                            return this['_' + prop];
+                            return this[localSym];
                         },
                         set: function (val) {
-                            this['_' + prop] = val;
-                            if(this.input && this.renderer && !this.hasAttribute('disabled')) this.renderer(this.input, this.target || target);
+                            this[localSym] = val;
+                            if(this._input && this._renderer && !this.hasAttribute('disabled')) this._renderer(this._input, this._target || target);
                         },
                         enumerable: true,
                         configurable: true,
@@ -52,7 +55,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
     }
     addProps(target: any, scriptInfo: IScriptInfo){
         if(target.dataset.addedProps) return;
-        this.commitProps(scriptInfo.args.concat('renderer', 'input', 'target'), target);
+        this.commitProps(scriptInfo.args.concat('renderer', _input, 'target'), target);
         target.dataset.addedProps = 'true';
         if(!target.input){
             const inp = target.dataset.input;
@@ -64,7 +67,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
     }
     getScript(srcScript: HTMLScriptElement): IScriptInfo{
         return {
-            args: ['input'],
+            args: [_input],
             body: srcScript.innerHTML,
         };
     }
@@ -78,7 +81,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
         if(importAttr !== null) importPaths = (<any>self)[importAttr];
         const count = LitterG._count++;
         const scriptInfo = this.getScript((<any>target)._script);
-        const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : 'input';
+        const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : _input;
         const text = /* js */`
 const litterG = customElements.get('litter-g');
 const litter = (${args}) => ${scriptInfo.body};

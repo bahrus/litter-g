@@ -98,7 +98,7 @@ However, if you want to use this in production, or if you want to access more of
 To do this, create a string constant in document.head, which provides your prefered imports.  For example:
 
 ```JavaScript
-    const litImports = `
+    self['litImports'] = `
     import {render, html} from '//unpkg.com/lit-html?module'
     `
 ```

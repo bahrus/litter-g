@@ -11,18 +11,20 @@
 <body>
     <div>
         <litter-gz></litter-gz>
-        <!-- <ul data-lit data-input='["He", "She", "They", "Ze"]'>
+        <ul data-lit data-input='["He", "She", "They", "Ze"]'>
                 <script nomodule>
                     html`${_input.map((i) => html`<li>${i}</li>`)}`
                 </script>
-        </ul> -->
+        </ul>
 
         <div>Latutide: </div>
         <input aria-placeholder="Latitude" placeholder="Latitude" value="41.903878">
+        <!-- pass down (p-d) input value to _latitude property of div#long_lat -->
         <p-d on="input" to="#long_lat" prop="_latitude" m="1"></p-d>
 
         <div>Longitude:</div>
         <input aria-placeholder="Longitude" placholder="Longitude" value="12.452818">
+        <!-- pass down (p-d) input value to _longitude property of div#long_lat -->
         <p-d on="input" to="#long_lat" prop="_longitude" m="1"></p-d>
         
         <div data-lit id="long_lat">
@@ -42,10 +44,7 @@
                 flex-direction: row;
             }
         </style>
-        <!-- <script type="module" src="https://unpkg.com/litter-g@0.0.19/litter-gz.js?module"></script> -->
-        <!-- <script type="module" src="../litter-gz.iife.js"></script> -->
-        <script type="module" src="../litter-gz.js"></script>
-        <!-- <script type="module" src="https://unpkg.com/wired-elements@latest/dist/wired-elements.bundled.min.js"></script> -->
+        <script type="module" src="https://unpkg.com/litter-g@0.0.20/litter-gz.js?module"></script>
         <script type="module" src="https://unpkg.com/p-d.p-u@0.0.105/p-d.js?module"></script>
     </div>
 </body>

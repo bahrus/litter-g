@@ -42,13 +42,42 @@ litter-g attaches a lit renderer property to any DOM element in its ShadowDOM re
 <custom-element-demo>
   <template>
     <div>
-        <litter-g></litter-g>
+        <litter-gz></litter-gz>
         <ul data-lit data-input='["He", "She", "They", "Ze"]'>
                 <script nomodule>
-                    html`${input.map((i) => html`<li>${i}</li>`)}`
+                    html`${_input.map((i) => html`<li>${i}</li>`)}`
                 </script>
         </ul>
-        <script type="module" src="https://unpkg.com/litter-g@0.0.14/litter-g.js?module"></script>
+
+        <div>Latutide: </div>
+        <input aria-placeholder="Latitude" placeholder="Latitude" value="41.903878">
+        <!-- pass down (p-d) input value to _latitude property of div#long_lat -->
+        <p-d on="input" to="#long_lat" prop="_latitude" m="1"></p-d>
+
+        <div>Longitude:</div>
+        <input aria-placeholder="Longitude" placholder="Longitude" value="12.452818">
+        <!-- pass down (p-d) input value to _longitude property of div#long_lat -->
+        <p-d on="input" to="#long_lat" prop="_longitude" m="1"></p-d>
+        
+        <div data-lit id="long_lat">
+            <script nomodule>
+                tr = ({_latitude, _longitude}) => html`
+                    <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
+                        (${_latitude},${_longitude})
+                    </a> 
+                `;
+            </script>
+        </div>
+
+
+        <style>
+            .fieldInput{
+                display:flex;
+                flex-direction: row;
+            }
+        </style>
+        <script type="module" src="https://unpkg.com/litter-g@0.0.20/litter-gz.js?module"></script>
+        <script type="module" src="https://unpkg.com/p-d.p-u@0.0.105/p-d.js?module"></script>
     </div>
   </template>
 </custom-element-demo>

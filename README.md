@@ -26,12 +26,12 @@ The litter-g web component only affects things that happen within its ShadowDOM 
 ...
 <ul data-lit>
     <script nomodule>
-        html`${input.map((i) => html`<li>${i}</li>`)}`
+        html`${_input.map((i) => html`<li>${i}</li>`)}`
     </script>
 </ul>
 ...
 <script>
-        document.querySelector('[data-lit]').input = ["He", "She", "They", "Ze"];
+        document.querySelector('[data-lit]')._input = ["He", "She", "They", "Ze"];
 </script>
 ```
 
@@ -99,8 +99,7 @@ To do this, create a string constant in document.head, which provides your prefe
 
 ```JavaScript
     const litImports = `
-    import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
-    import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
+    import {render, html} from '//unpkg.com/lit-html?module'
     `
 ```
 
@@ -111,8 +110,6 @@ Then in your litter-g tag, specify which constant to use for imports:
 ```
 
 As you can see, the "import" attribute should match the constant specified in document.head.  This will allow you to pick where the imports should come from.
-
-Note that using this technique, one can easily use other libraries not based on lit-html.  For example, [https://medium.com/@WebReflection/lit-html-vs-hyperhtml-vs-lighterhtml-c084abfe1285](lighterhtml) ought to work out of the box.  Support for [htm](https://github.com/developit/htm#example) is planned.
 
 ## Multivariable Functions
 
@@ -139,7 +136,7 @@ and does the following:
 
 **NB I:** The "tr = " is optional text.  This allows VSCode to provide intellisense on the expression without giving syntax errors by the polymer server (possibly caused by how Babel interprets the text.)   It stands for template result.
 
-**NB II:** The underscores (_latitude, _longitude) are optional, but they are recommended, in order avoid any concerns about a native property being added to the Native HTML element (div) in this case.  It's difficult to imagine the W3C adding properties "latitude" and "longitude" to the div element, but just in case.  Presumably, they wouldn't add properties begining with an underscore.
+**NB II:** The underscores (_latitude, _longitude) are optional, but they are recommended, in order avoid any concerns about a native property being added to the Native HTML element (div in this case) with the same name.  It's difficult to imagine the W3C adding properties "latitude" and "longitude" to the div element, but just in case.  If they did, and you used latitude and longitude without prefixing, it's hard to predict what would happen.  Presumably, they wouldn't add properties begining with an underscore, as that's a pattern never seen before.
 
 ##   [IE11 Support](https://youtu.be/YVi6ZYzD_Gc?t=275) 
 

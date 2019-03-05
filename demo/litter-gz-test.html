@@ -13,9 +13,9 @@
 
     <div data-lit id="long_lat">
         <script nomodule>
-            tr = ({latitude, longitude}) => html`
-                <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
-                    (${latitude},${longitude})
+            tr = ({_latitude, _longitude}) => html`
+                <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
+                    (${_latitude},${_longitude})
                 </a> 
             `;
         </script>
@@ -24,8 +24,8 @@
 
     <script type="module" src="../dist/litter-gz.iife.js"></script>
     <script>
-        long_lat.latitude = 41.903878;
-        long_lat.longitude = 12.452818;
+        long_lat._latitude = 41.903878;
+        long_lat._longitude = 12.452818;
     </script>
 </body>
 

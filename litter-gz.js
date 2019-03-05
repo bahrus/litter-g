@@ -1,6 +1,6 @@
 import { LitterG } from './litter-g.js';
-import { define } from 'xtal-latx/define.js';
-import { getScript, destruct } from 'xtal-latx/destruct.js';
+import { define } from 'xtal-element/define.js';
+import { getScript, destruct } from 'xtal-element/destruct.js';
 export class LitterGZ extends LitterG {
     static get is() { return 'litter-gz'; }
     getScript(srcScript) {

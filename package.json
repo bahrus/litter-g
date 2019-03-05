@@ -5,7 +5,7 @@
   "main": "litter-g.js",
   "module": "litter-g.js",
   "dependencies": {
-    "xtal-element": "0.0.29"
+    "xtal-element": "0.0.30"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "2.2.7",

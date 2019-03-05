@@ -83,7 +83,7 @@ Then in your litter-g tag, specify which constant to use for imports:
 
 As you can see, the "import" attribute should match the constant specified in document.head.  This will allow you to pick where the imports should come from.
 
-Note that using this technique, one can easily use other libraries not based on lit-html.  For example, [https://medium.com/@WebReflection/lit-html-vs-hyperhtml-vs-lighterhtml-c084abfe1285](lighterhtml) ought to work out of the box.  Support from [htm](https://github.com/developit/htm#example) is planned.
+Note that using this technique, one can easily use other libraries not based on lit-html.  For example, [https://medium.com/@WebReflection/lit-html-vs-hyperhtml-vs-lighterhtml-c084abfe1285](lighterhtml) ought to work out of the box.  Support for [htm](https://github.com/developit/htm#example) is planned.
 
 ## Multivariable Functions
 
@@ -94,9 +94,9 @@ Sometimes we want a ui element to depend on more than one input parameter.  To d
 ...
 <div data-lit>
     <script nomodule>
-        tr = ({latitude, longitude}) => html`
-            <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
-                (${latitude},${longitude})
+        tr = ({_latitude, _longitude}) => html`
+            <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
+                (${_latitude},${_longitude})
             </a> 
         `
     </script>
@@ -108,7 +108,9 @@ and does the following:
 1)  Adds properties latitude, longitude to the div DOM element.   
 2)  Updates the input property any time either of those properties change (with a little debouncing), thus causing lit-html to rerender.
 
-**NOTE:** The "tr = " is optional text.  This allows VSCode to provide intellisense on the expression without giving syntax errors by the polymer server (possibly caused by how Babel interprets the text.)   It stands for template result.
+**NB I:** The "tr = " is optional text.  This allows VSCode to provide intellisense on the expression without giving syntax errors by the polymer server (possibly caused by how Babel interprets the text.)   It stands for template result.
+
+**NB II:** The underscores (_latitude, _longitude) are optional, but they are recommended, in order avoid any concerns about a native property being added to the Native HTML element (div) in this case.  It's difficult to imagine the W3C adding properties "latitude" and "longitude" to the div element, but just in case.  Presumably, they wouldn't add properties begining with an underscore.
 
 ##   [IE11 Support](https://youtu.be/YVi6ZYzD_Gc?t=275) 
 

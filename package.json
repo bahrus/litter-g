@@ -5,14 +5,15 @@
   "main": "litter-g.js",
   "module": "litter-g.js",
   "dependencies": {
-    "xtal-element": "0.0.30"
+    "xtal-element": "0.0.59",
+    "trans-render": "0.0.111"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.2.7",
+    "@webcomponents/webcomponentsjs": "2.2.10",
     "jiife": "0.0.12",
     "tape": "4.10.1",
     "@types/tape": "4.2.33",
-    "xtal-test": "0.0.10"
+    "xtal-test": "0.0.18"
   },
   "scripts": {
     "test": "node createIIFE.js && tape test/litter-g-test1.js && tape test/litter-gz-test1.js"

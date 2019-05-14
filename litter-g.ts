@@ -1,5 +1,5 @@
 import {observeCssSelector} from 'xtal-element/observeCssSelector.js';
-import {define} from 'xtal-element/define.js';
+import {define} from 'trans-render/define.js';
 import {attachScriptFn, getDynScript} from 'xtal-element/attachScriptFn.js';
 export interface IScriptInfo{
     args: string[],

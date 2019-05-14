@@ -1,5 +1,5 @@
 import { LitterG } from './litter-g.js';
-import { define } from 'xtal-element/define.js';
+import { define } from 'trans-render/define.js';
 import { getScript, destruct } from 'xtal-element/destruct.js';
 export class LitterGZ extends LitterG {
     static get is() { return 'litter-gz'; }

@@ -3,7 +3,8 @@ import {define} from 'trans-render/define.js';
 import {attachScriptFn, getDynScript} from 'xtal-element/attachScriptFn.js';
 export interface IScriptInfo{
     args: string[],
-    body: string,
+    render: string,
+    handlers?: string
 }
 const _input = '_input';
 const _target = '_target';
@@ -68,9 +69,11 @@ export class LitterG extends observeCssSelector(HTMLElement){
 
     }
     getScript(srcScript: HTMLScriptElement): IScriptInfo{
+        const scriptTextSplit = srcScript.innerHTML.split('//render');
         return {
             args: [_input],
-            body: srcScript.innerHTML,
+            render: scriptTextSplit[scriptTextSplit.length - 1],
+            handlers: scriptTextSplit.length > 1 ? scriptTextSplit[0] : ''
         };
     }
     registerScript(target: HTMLElement){
@@ -84,7 +87,8 @@ const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, 
         const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : _input;
         const text = /* js */`
 const litterG = customElements.get('litter-g');
-const litter = (${args}) => ${scriptInfo.body};
+${scriptInfo.handlers}
+const litter = (${args}) => ${scriptInfo.render};
 const __fn = function(input, target){
     render(litter(input), target);
 }    
@@ -101,7 +105,6 @@ const __fn = function(input, target){
     }
     onPropsChange(){
         if(!this._connected) return;
-        
         this.addCSSListener(LitterG.is, '[data-lit]', this.insertListener);
     }
 

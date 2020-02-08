@@ -13,6 +13,10 @@
         <ul id="pronouns" data-lit data-input='["He", "She", "They", "Ze"]'>
             <li>I am here</li>
             <script nomodule>
+                function clickHandler(e){
+                    console.log(e);
+                }
+                //render
                 html`${_input.map((item, idx) => html`<li id="li_${idx}">${item}</li>`)}`
             </script>
         </ul>

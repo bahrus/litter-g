@@ -60,9 +60,11 @@ export class LitterG extends observeCssSelector(HTMLElement) {
         }
     }
     getScript(srcScript) {
+        const scriptTextSplit = srcScript.innerHTML.split('//render');
         return {
             args: [_input],
-            body: srcScript.innerHTML,
+            render: scriptTextSplit[scriptTextSplit.length - 1],
+            handlers: scriptTextSplit.length > 1 ? scriptTextSplit[0] : ''
         };
     }
     registerScript(target) {
@@ -77,7 +79,8 @@ const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, 
         const args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : _input;
         const text = /* js */ `
 const litterG = customElements.get('litter-g');
-const litter = (${args}) => ${scriptInfo.body};
+${scriptInfo.handlers}
+const litter = (${args}) => ${scriptInfo.render};
 const __fn = function(input, target){
     render(litter(input), target);
 }    

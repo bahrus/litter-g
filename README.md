@@ -20,7 +20,8 @@ Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal
 
 ## Syntax
 
-The litter-g web component only affects things that happen within its ShadowDOM realm.  Or, if you place it outside any ShadowDOM, it only affects things outside any ShadowDOM.
+By referencing the litter-g library, this only affects things outside any ShadowDOM.
+
 
 ```html
 <ul data-lit>
@@ -30,85 +31,43 @@ The litter-g web component only affects things that happen within its ShadowDOM 
 </ul>
 ...
 <script>
-        document.querySelector('[data-lit]')._input = ["He", "She", "They", "Ze"];
+        document.querySelector('[data-lit]')._input = ["He", "She", "They", "Other"];
 </script>
 ```
 
-litter-g attaches a lit renderer property to any DOM element in its ShadowDOM realm, having attribute 'data-lit', based on the snippet of lit syntax contained within the script child, as shown above.  It also attaches an "_input" property.  Any time the _input property changes, the renderer updates the parent DOM element. Optionally, one can set the initial input property via the data-input attribute, as shown in the demo below.
+You can also specify the input via a JSON attribute:
 
-<!--
 ```
-<custom-element-demo>
-  <template>
-    <div>
-        <litter-gz></litter-gz>
-        <ul data-lit data-input='["He", "She", "They", "Ze"]'>
-                <script nomodule>
-                    html`${_input.map((i) => html`<li>${i}</li>`)}`
-                </script>
-        </ul>
-
-        <div>Latutide: </div>
-        <input aria-placeholder="Latitude" placeholder="Latitude" value="41.903878">
-        <!-- pass down (p-d) input value to _latitude property of div#long_lat -->
-        <p-d on="input" to="#long_lat" prop="_latitude" m="1"></p-d>
-
-        <div>Longitude:</div>
-        <input aria-placeholder="Longitude" placholder="Longitude" value="12.452818">
-        <!-- pass down (p-d) input value to _longitude property of div#long_lat -->
-        <p-d on="input" to="#long_lat" prop="_longitude" m="1"></p-d>
-        
-        <div data-lit id="long_lat">
-            <script nomodule>
-                tr = ({_latitude, _longitude}) => html`
-                    <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
-                        (${_latitude},${_longitude})
-                    </a> 
-                `;
-            </script>
-        </div>
-
-
-        <style>
-            .fieldInput{
-                display:flex;
-                flex-direction: row;
-            }
-        </style>
-        <script type="module" src="https://unpkg.com/litter-g@0.0.20/litter-gz.js?module"></script>
-        <script type="module" src="https://unpkg.com/p-d.p-u@0.0.105/p-d.js?module"></script>
-    </div>
-  </template>
-</custom-element-demo>
-```
--->
-
-## References
-
-A natural question arises -- where to get the lit-html references from?  Out of the box, litter-g just hardcodes some fine-for-development defaults:
-
-```JavaScript
-    import {html, render} from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
-    import {repeat} from 'https://cdn.jsdelivr.net/npm/lit-html/lib/repeat.js';
+<ul data-lit data-input='["He", "She", "They", "Other"]'>
+        <script nomodule>
+            html`${_input.map((i) => html`<li>${i}</li>`)}`
+        </script>
+</ul>
 ```
 
-However, if you want to use this in production, or if you want to access more of lit's directives, it would be best to create your own references to some (bundled) files that best meet your target browser / geography.
 
-To do this, create a string constant in document.head, which provides your prefered imports.  For example:
+litter-g attaches a lit renderer property to any DOM element in its ShadowDOM realm, having attribute 'data-lit', based on the snippet of lit syntax contained within the script child, as shown above.  It also attaches an "_input" property.  Any time the _input property changes, the renderer updates the parent DOM element. 
 
-```JavaScript
-    self['litImports'] = `
-    import {render, html} from '//unpkg.com/lit-html?module'
-    `
-```
+## Directives
 
-Then in your litter-g tag, specify which constant to use for imports:
+All the lit-html directives that are part of the lit-html library are available for use.
+
+## Event Handling
+
+It's a bit "hackish", but you can add event handlers, if you are careful to demark where the event handlers end, and the template begins, via the "magic string" //render:
 
 ```html
-<litter-g import="litImports"></litter-g>
+<ul id="pronouns" data-lit data-input='["He", "She", "They", "Other"]'>
+    <li>I am here</li>
+    <script nomodule>
+        function clickHandler(e){
+            console.log(e);
+        }
+        //render
+        html`${_input.map((item, idx) => html`<li @click="${clickHandler}" id="li_${idx}">${item}</li>`)}`
+    </script>
+</ul>
 ```
-
-As you can see, the "import" attribute should match the constant specified in document.head.  This will allow you to pick where the imports should come from.
 
 ## Multivariable Functions
 
@@ -142,11 +101,10 @@ and does the following:
 ## Viewing Your Element
 
 ```
-$ polymer serve
+$ npm install
+$ npm run serve
 ```
 
 ## Running Tests
 
-```
-$ npm test
-```
+WIP

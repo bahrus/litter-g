@@ -7,6 +7,8 @@
 
 # litter-g
 
+**NB:**  This component is undergoing experimental, breaking changes.
+
 ## Use Case
 
 The use case for litter-g is spelled out quite nicely by [React's introductory pages](https://reactjs.org/docs/add-react-to-a-website.html):

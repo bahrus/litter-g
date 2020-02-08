@@ -20,7 +20,7 @@ Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal
 
 ## Syntax
 
-By referencing the litter-g library, this only affects things outside any ShadowDOM.
+By referencing the litter-g library, this only affects things outside any ShadowDOM.  The attribute "data-lit" is the magic attribute that causes the DOM element to become a target for lit-html:
 
 
 ```html
@@ -37,14 +37,13 @@ By referencing the litter-g library, this only affects things outside any Shadow
 
 You can also specify the input via a JSON attribute:
 
-```
+```html
 <ul data-lit data-input='["He", "She", "They", "Other"]'>
-        <script nomodule>
-            html`${_input.map((i) => html`<li>${i}</li>`)}`
-        </script>
+    <script nomodule>
+        html`${_input.map((i) => html`<li>${i}</li>`)}`
+    </script>
 </ul>
 ```
-
 
 litter-g attaches a lit renderer property to any DOM element in its ShadowDOM realm, having attribute 'data-lit', based on the snippet of lit syntax contained within the script child, as shown above.  It also attaches an "_input" property.  Any time the _input property changes, the renderer updates the parent DOM element. 
 

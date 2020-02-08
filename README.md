@@ -4,7 +4,6 @@
 
 <img src="https://badgen.net/bundlephobia/minzip/litter-g">
 
-
 # litter-g
 
 **NB:**  This component is undergoing experimental, breaking changes.
@@ -24,8 +23,6 @@ Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal
 The litter-g web component only affects things that happen within its ShadowDOM realm.  Or, if you place it outside any ShadowDOM, it only affects things outside any ShadowDOM.
 
 ```html
-<litter-g></litter-g>
-...
 <ul data-lit>
     <script nomodule>
         html`${_input.map((i) => html`<li>${i}</li>`)}`

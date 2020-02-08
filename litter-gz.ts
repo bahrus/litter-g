@@ -17,3 +17,4 @@ export class LitterGZ extends LitterG {
 }
 
 define(LitterGZ);
+document.body.appendChild(document.createElement(LitterGZ.is));

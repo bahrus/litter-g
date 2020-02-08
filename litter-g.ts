@@ -103,9 +103,11 @@ const __fn = function(input, target){
     }
     onPropsChange(){
         if(!this._connected) return;
+        
         this.addCSSListener(LitterG.is, '[data-lit]', this.insertListener);
     }
 
 
 }
 define(LitterG);
+document.body.appendChild(document.createElement(LitterG.is));

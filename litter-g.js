@@ -100,3 +100,4 @@ const __fn = function(input, target){
 }
 LitterG._count = 0;
 define(LitterG);
+document.body.appendChild(document.createElement(LitterG.is));

@@ -1,6 +1,6 @@
 {
   "name": "litter-g",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "Use lit-html inside an html element",
   "main": "litter-g.js",
   "module": "litter-g.js",

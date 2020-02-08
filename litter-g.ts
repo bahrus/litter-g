@@ -74,10 +74,8 @@ export class LitterG extends observeCssSelector(HTMLElement){
         };
     }
     registerScript(target: HTMLElement){
-        const base = 'https://cdn.jsdelivr.net/npm/lit-html/';
         let importPaths = `
-        import {html, render} from '${base}lit-html.js';
-        import {repeat} from '${base}lib/repeat.js';
+const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until} = customElements.get('litter-gz').exports;
 `;
         const importAttr = this.getAttribute('import');
         if(importAttr !== null) importPaths = (<any>self)[importAttr];

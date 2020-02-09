@@ -45,7 +45,7 @@ You can also specify the input via a JSON attribute:
 </ul>
 ```
 
-litter-g attaches a lit renderer property to any DOM element in its ShadowDOM realm, having attribute 'data-lit', based on the snippet of lit syntax contained within the script child, as shown above.  It also attaches an "_input" property.  Any time the _input property changes, the renderer updates the parent DOM element. 
+The snippet of lit syntax contained within the script child, becomes the innerHTML renderer, and it rerenders antime the attached  _input property changes.  \
 
 ## Directives
 
@@ -70,10 +70,9 @@ It's a bit "hackish", but you can add event handlers, if you are careful to dema
 
 ## Multivariable Functions
 
-Sometimes we want a ui element to depend on more than one input parameter.  To do this, we use litter-gz.  litter-gz extends litter-g so it supports everything litter-g does, with the same syntax.  But in addition, it takes an expression like this:
+Sometimes we want a ui element to depend on more than one input parameter.  
 
 ```html
-<litter-gz></litter-gz>
 ...
 <div data-lit>
     <script nomodule>
@@ -88,12 +87,12 @@ Sometimes we want a ui element to depend on more than one input parameter.  To d
 
 and does the following:
 
-1)  Adds properties latitude, longitude to the div DOM element.   
+1)  Adds properties _latitude, _longitude to the div DOM element.   
 2)  Updates the input property any time either of those properties change (with a little debouncing), thus causing lit-html to rerender.
 
-**NB I:** The "tr = " is optional text.  This allows VSCode to provide intellisense on the expression without giving syntax errors by the polymer server (possibly caused by how Babel interprets the text.)   It stands for template result.
+**NB I:** The "tr = " is optional text.  This allows VSCode to provide recognize the expression.  tr stands for "template result."
 
-**NB II:** The underscores (_latitude, _longitude) are optional, but they are recommended, in order avoid any concerns about a native property being added to the Native HTML element (div in this case) with the same name.  It's difficult to imagine the W3C adding properties "latitude" and "longitude" to the div element, but just in case.  If they did, and you used latitude and longitude without prefixing, it's hard to predict what would happen.  Presumably, they wouldn't add properties begining with an underscore, as that's a pattern never seen before.
+**NB II:** The underscores (_latitude, _longitude) are optional, but they are recommended, in order avoid any concerns about a native property being added to the Native HTML element (div in this case) with the same name.  It's difficult to imagine the W3C adding properties "latitude" and "longitude" to the div element, but just in case.  If they did, and you used latitude and longitude without prefixing, it's hard to predict what would happen.  Presumably, they wouldn't add properties beginning with an underscore, as that's a pattern never seen before.
 
 ##   [IE11 Support](https://youtu.be/YVi6ZYzD_Gc?t=275) 
 

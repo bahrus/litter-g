@@ -2,8 +2,8 @@
   "name": "litter-g",
   "version": "0.0.29",
   "description": "Use lit-html inside an html element",
-  "main": "litter-gz.js",
-  "module": "litter-gz.js",
+  "main": "litter-g.js",
+  "module": "litter-g.js",
   "dependencies": {
     "xtal-element": "0.0.101",
     "trans-render": "0.0.142",

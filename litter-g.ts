@@ -106,11 +106,11 @@ export class LitterG extends observeCssSelector(HTMLElement){
         
     }
 
-    getScript(srcScript: HTMLScriptElement) : IScriptInfo | null{
+    getScript(srcScript: HTMLScriptElement) : IScriptInfo{
         const s = this.getScriptm1(srcScript, 'tr = ');
         return (s === null) ? this.getScript2(srcScript) : s; 
     }
-    getScript2(srcScript: HTMLScriptElement): IScriptInfo | null{
+    getScript2(srcScript: HTMLScriptElement): IScriptInfo{
         const scriptTextSplit = srcScript.innerHTML.split('//render');
         return {
             args: [_input],

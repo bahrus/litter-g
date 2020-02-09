@@ -45,7 +45,7 @@ You can also specify the input via a JSON attribute:
 </ul>
 ```
 
-The snippet of lit syntax contained within the script child, becomes the innerHTML renderer, and it rerenders antime the attached  _input property changes.  \
+The snippet of lit syntax contained within the script child, becomes the innerHTML renderer, and it re-renders anytime the attached  _input property changes.  
 
 ## Directives
 

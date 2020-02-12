@@ -14,7 +14,7 @@
     "es-module-shims": "0.4.6"
   },
   "scripts": {
-    "test": "node createIIFE.js && tape test/litter-g-test1.js && tape test/litter-gz-test1.js",
+    "test": "node test/test-all.js",
     "serve": "node node_modules/xtal-test/serve.js"
   },
   "repository": {

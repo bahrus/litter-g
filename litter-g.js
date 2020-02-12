@@ -115,7 +115,6 @@ const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, 
         const scriptInfo = this.getScript(target._script);
         const args = scriptInfo.args.length > 1 ? '{' + scriptInfo.args.join(',') + '}' : _input;
         const text = /* js */ `
-const litterG = customElements.get('litter-g');
 ${scriptInfo.handlers}
 const litter = (${args}) => ${scriptInfo.render};
 const __fn = function(input, target){

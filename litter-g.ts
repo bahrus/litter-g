@@ -1,5 +1,6 @@
 import {observeCssSelector} from 'xtal-element/observeCssSelector.js';
 import {define} from 'trans-render/define.js';
+import {destruct} from 'xtal-element/destruct.js';
 import {attachScriptFn, getDynScript} from 'xtal-element/attachScriptFn.js';
 import {html, render} from 'lit-html/lit-html.js';
 import {repeat} from 'lit-html/directives/repeat.js';
@@ -36,7 +37,9 @@ export class LitterG extends observeCssSelector(HTMLElement){
             }, 0)
         }
     }
-    defGenProp(target: HTMLElement, prop: string){}
+    defGenProp(target: HTMLElement, prop: string){
+        destruct(target, prop);
+    }
 
     commitProps(props: string[], target: HTMLElement){
         props.forEach(prop =>{
@@ -98,6 +101,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
             return {
                 args: lhs.split(',').map(s => s.trim()),
                 render: rhs,
+                handlers: ''
             }
             
         }else{

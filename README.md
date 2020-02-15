@@ -48,7 +48,7 @@ You can also specify the input via a JSON attribute:
 </ul>
 ```
 
-The snippet of lit syntax contained within the script child, becomes the innerHTML renderer, and it re-renders anytime the attached  _input property changes.  
+The snippet of lit syntax contained within the script child becomes the innerHTML renderer, and it re-renders anytime the attached  _input property changes.  
 
 ## Directives
 
@@ -96,6 +96,31 @@ and does the following:
 **NB I:** The "tr = " is optional text.  This allows VSCode to provide recognize the expression.  tr stands for "template result."
 
 **NB II:** The underscores (_latitude, _longitude) are optional, but they are recommended, in order avoid any concerns about a native property being added to the Native HTML element (div in this case) with the same name.  It's difficult to imagine the W3C adding properties "latitude" and "longitude" to the div element, but just in case.  If they did, and you used latitude and longitude without prefixing, it's hard to predict what would happen.  Presumably, they wouldn't add properties beginning with an underscore, as that's a pattern never seen before.
+
+You can also add event handlers just as before, separated by the //render comment.
+
+## Using inside ShadowDOM
+
+If you wish to use litter-g inside a ShadowDOM realm, then in addition to referencing litter-g.js you will need to insert an instance of the litter-g custom element, which then monitors for the ShadowDOM realm for elements with attribute data-lit.
+
+```html
+<host-element>
+    #ShadowDOM
+        ...
+        <litter-g></litter-g>
+        ...
+        <ul id="pronouns" data-lit data-input='["He", "She", "They", "Other"]'>
+            <li>I am here</li>
+            <script nomodule>
+                function clickHandler(e){
+                    console.log(e);
+                }
+                //render
+                html`${_input.map((item, idx) => html`<li @click="${clickHandler}" id="li_${idx}">${item}</li>`)}`
+            </script>
+        </ul>
+</host-element>
+```
 
 ##   [IE11 Support](https://youtu.be/YVi6ZYzD_Gc?t=275) 
 

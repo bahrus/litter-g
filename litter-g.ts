@@ -88,8 +88,8 @@ export class LitterG extends observeCssSelector(HTMLElement){
             html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until 
         }; 
     } 
-    //TODO:  provide better names
-    getScriptm1(srcScript: HTMLScriptElement, ignore: string, split: string[]) : IScriptInfo | null{
+    parseMultiVariateScript(srcScript: HTMLScriptElement, ignore: string) : IScriptInfo{
+        const split = srcScript.innerHTML.split('//render');
         const len = split.length;
         const renderScript = len === 2 ? split[1] : split[0];
         const actionScript = len === 2 ? split[0] : '';
@@ -108,24 +108,18 @@ export class LitterG extends observeCssSelector(HTMLElement){
             }
             
         }else{
-            return null;
+            //Not multivariate
+            return {
+                args: [_input],
+                render: split[split.length - 1],
+                handlers: split.length > 1 ? split[0] : ''
+            };
         }
         
     }
 
-    getScript(srcScript: HTMLScriptElement) : IScriptInfo{
-        const scriptTextSplit = srcScript.innerHTML.split('//render');
-        const s = this.getScriptm1(srcScript, 'tr = ', scriptTextSplit);
-        return (s === null) ? this.getScript2(srcScript, scriptTextSplit) : s; 
-    }
-    getScript2(srcScript: HTMLScriptElement, split: string[]): IScriptInfo{
-        
-        return {
-            args: [_input],
-            render: split[split.length - 1],
-            handlers: split.length > 1 ? split[0] : ''
-        };
-    }
+
+
     registerScript(target: HTMLElement){
         let importPaths = `
 const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until} = customElements.get('litter-g').exports;
@@ -133,7 +127,7 @@ const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, 
         const importAttr = this.getAttribute('import');
         if(importAttr !== null) importPaths = (<any>self)[importAttr];
         const count = LitterG._count++;
-        const scriptInfo = this.getScript((<any>target)._script);
+        const scriptInfo = this.parseMultiVariateScript((<any>target)._script, 'tr = ');
         const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : _input;
         const text = /* js */`
 ${scriptInfo.handlers}

@@ -88,11 +88,14 @@ export class LitterG extends observeCssSelector(HTMLElement){
             html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until 
         }; 
     } 
-
-    getScriptm1(srcScript: HTMLScriptElement, ignore: string) : IScriptInfo | null{
-        const inner = srcScript.innerHTML.trim();
+    //TODO:  provide better names
+    getScriptm1(srcScript: HTMLScriptElement, ignore: string, split: string[]) : IScriptInfo | null{
+        const len = split.length;
+        const renderScript = len === 2 ? split[1] : split[0];
+        const actionScript = len === 2 ? split[0] : '';
+        const inner = renderScript.trim();
         if(inner.startsWith('(') || inner.startsWith(ignore)){
-
+            //assume multivariate function scenario
             const iFatArrowPos = inner.indexOf('=>');
             const c2del = ['(', ')', '{', '}'];
             let lhs = inner.substr(0, iFatArrowPos).replace(ignore, '').trim();
@@ -101,7 +104,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
             return {
                 args: lhs.split(',').map(s => s.trim()),
                 render: rhs,
-                handlers: ''
+                handlers: actionScript
             }
             
         }else{
@@ -111,15 +114,16 @@ export class LitterG extends observeCssSelector(HTMLElement){
     }
 
     getScript(srcScript: HTMLScriptElement) : IScriptInfo{
-        const s = this.getScriptm1(srcScript, 'tr = ');
-        return (s === null) ? this.getScript2(srcScript) : s; 
-    }
-    getScript2(srcScript: HTMLScriptElement): IScriptInfo{
         const scriptTextSplit = srcScript.innerHTML.split('//render');
+        const s = this.getScriptm1(srcScript, 'tr = ', scriptTextSplit);
+        return (s === null) ? this.getScript2(srcScript, scriptTextSplit) : s; 
+    }
+    getScript2(srcScript: HTMLScriptElement, split: string[]): IScriptInfo{
+        
         return {
             args: [_input],
-            render: scriptTextSplit[scriptTextSplit.length - 1],
-            handlers: scriptTextSplit.length > 1 ? scriptTextSplit[0] : ''
+            render: split[split.length - 1],
+            handlers: split.length > 1 ? split[0] : ''
         };
     }
     registerScript(target: HTMLElement){

@@ -31,7 +31,7 @@
 
     <div id=wriggled data-lit>
         <script nomodule>
-            tr = (_s1, _s2, _s3) => html`<p mark>${_s1}</p><p mark>${_s2}</p><p mark>${_s3}</p>`
+            tr = (_s1, _s2, _s3) => html`<p ?mark="${_s1}">${_s1}</p><p ?mark="${_s2}">${_s2}</p><p ?mark="${_s3}">${_s3}</p>`
         </script>
     </div>
     <script>
@@ -44,17 +44,21 @@
     <div id=bird data-lit>
         <script nomodule>
             function handleClick2(){
-                console.log
+                console.log('in handleClick2');
             }
             //render
-            tr = (_s1, _s2, _s3) => html`<p mark @click="${handleClick2}">${_s1}</p><p mark>${_s2}</p><p mark>${_s3}</p>`
+            tr = (_s1, _s2, _s3) => html`<p id=swallowedBird ?mark="${_s1}" @click="${handleClick2}">${_s1}</p><p ?mark="${_s2}">${_s2}</p><p ?mark="${_s3}">${_s3}</p>`
         </script>
     </div>
     <script>
         setTimeout(() =>{
             bird._s1 = 'There was an old lady who swallowed a bird; ';
             bird._s2 = 'How absurd to swallow a bird!';
-        }, 3000)
+            setTimeout(() =>{
+                bird._s3 = 'She swallowed the bird to catch the spider;'
+            }, 1000);
+        }, 1000)
+        
     </script>     
     <!-- Use experimental import maps -->
     <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>

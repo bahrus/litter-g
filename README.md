@@ -50,7 +50,7 @@ You can also specify the input via a JSON attribute:
 
 The snippet of lit syntax contained within the script child becomes the innerHTML renderer, and it re-renders anytime the attached  _input property changes. 
 
-## [Demo](https://jsfiddle.net/bahrus/ma2y8ev0/2/)
+## [Demo](https://jsfiddle.net/bahrus/ma2y8ev0/4/)
 
 <!--
 ```
@@ -64,7 +64,7 @@ The snippet of lit syntax contained within the script child becomes the innerHTM
         </ul>
 
         <label>
-            Latutide:
+            Latitude:
             <input aria-placeholder=Latitude placeholder=Latitude value=41.903878>
             <!-- pass down (p-d) input value to _latitude property of div-->
             <p-d on=input to=[-_latitude] from=label  m=1></p-d>
@@ -95,6 +95,10 @@ The snippet of lit syntax contained within the script child becomes the innerHTM
             .fieldInput{
                 display:flex;
                 flex-direction: row;
+            }
+            label{
+                display:flex;
+                flex-direction:row;
             }
         </style>
         <script type="module" src="https://unpkg.com/litter-g@0.0.31/litter-g.js?module"></script>

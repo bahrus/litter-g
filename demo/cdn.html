@@ -16,17 +16,24 @@
                 </script>
         </ul>
 
-        <div>Latutide: </div>
-        <input aria-placeholder="Latitude" placeholder="Latitude" value="41.903878">
-        <!-- pass down (p-d) input value to _latitude property of div#long_lat -->
-        <p-d on="input" to="#long_lat" prop="_latitude" m="1"></p-d>
-
-        <div>Longitude:</div>
-        <input aria-placeholder="Longitude" placholder="Longitude" value="12.452818">
-        <!-- pass down (p-d) input value to _longitude property of div#long_lat -->
-        <p-d on="input" to="#long_lat" prop="_longitude" m="1"></p-d>
+        <label>
+            Latutide:
+            <input aria-placeholder=Latitude placeholder=Latitude value=41.903878>
+            <!-- pass down (p-d) input value to _latitude property of div-->
+            <p-d on=input to=[-_latitude] from=label  m=1></p-d>
+        </label>
         
-        <div data-lit id="long_lat">
+        
+
+        <label>
+            Longitude:
+            <input aria-placeholder=Longitude placholder=Longitude value=12.452818>
+            <!-- pass down (p-d) input value to _longitude property of div#long_lat -->
+            <p-d on=input to=[-_longitude] from=label m=1></p-d>
+        </label>
+
+        
+        <div -_latitude -_longitude data-lit>
             <script nomodule>
                 tr = ({_latitude, _longitude}) => html`
                     <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
@@ -43,8 +50,8 @@
                 flex-direction: row;
             }
         </style>
-        <script type="module" src="https://unpkg.com/litter-g@0.0.20/litter-gz.js?module"></script>
-        <script type="module" src="https://unpkg.com/p-d.p-u@0.0.105/p-d.js?module"></script>
+        <script type="module" src="https://unpkg.com/litter-g@0.0.31/litter-g.js?module"></script>
+        <script type="module" src="https://unpkg.com/p-et-alia@0.0.70/p-d.js?module"></script>
     </div>
 </body>
 

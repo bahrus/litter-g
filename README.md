@@ -48,8 +48,62 @@ You can also specify the input via a JSON attribute:
 </ul>
 ```
 
-The snippet of lit syntax contained within the script child becomes the innerHTML renderer, and it re-renders anytime the attached  _input property changes.  
+The snippet of lit syntax contained within the script child becomes the innerHTML renderer, and it re-renders anytime the attached  _input property changes. 
 
+## [Demo](https://jsfiddle.net/bahrus/ma2y8ev0/2/)
+
+<!--
+```
+<custom-element-demo>
+  <template>
+    <div>
+        <ul data-lit data-input='["He", "She", "They", "Ze"]'>
+                <script nomodule>
+                    html`${_input.map((i) => html`<li>${i}</li>`)}`
+                </script>
+        </ul>
+
+        <label>
+            Latutide:
+            <input aria-placeholder=Latitude placeholder=Latitude value=41.903878>
+            <!-- pass down (p-d) input value to _latitude property of div-->
+            <p-d on=input to=[-_latitude] from=label  m=1></p-d>
+        </label>
+        
+        
+
+        <label>
+            Longitude:
+            <input aria-placeholder=Longitude placholder=Longitude value=12.452818>
+            <!-- pass down (p-d) input value to _longitude property of div#long_lat -->
+            <p-d on=input to=[-_longitude] from=label m=1></p-d>
+        </label>
+
+        
+        <div -_latitude -_longitude data-lit>
+            <script nomodule>
+                tr = ({_latitude, _longitude}) => html`
+                    <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
+                        (${_latitude},${_longitude})
+                    </a> 
+                `;
+            </script>
+        </div>
+
+
+        <style>
+            .fieldInput{
+                display:flex;
+                flex-direction: row;
+            }
+        </style>
+        <script type="module" src="https://unpkg.com/litter-g@0.0.31/litter-g.js?module"></script>
+        <script type="module" src="https://unpkg.com/p-et-alia@0.0.70/p-d.js?module"></script>
+    </div>
+  </template>
+</custom-element-demo>
+```
+-->
 ## Directives
 
 All the lit-html directives that are part of the lit-html library are available for use.

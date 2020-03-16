@@ -1,7 +1,7 @@
 import {observeCssSelector} from 'xtal-element/observeCssSelector.js';
 import {define} from 'trans-render/define.js';
 import {destruct} from 'xtal-element/destruct.js';
-import {attachScriptFn, getDynScript} from 'xtal-element/attachScriptFn.js';
+import {attachScriptFn} from 'xtal-element/attachScriptFn.js';
 import {html, render} from 'lit-html/lit-html.js';
 import {repeat} from 'lit-html/directives/repeat.js';
 import {asyncAppend} from 'lit-html/directives/async-append.js';
@@ -29,12 +29,15 @@ export class LitterG extends observeCssSelector(HTMLElement){
     insertListener(e: any){
         if (e.animationName === LitterG.is) {
             const target = e.target;
-            setTimeout(() =>{
-                getDynScript(target, () =>{
-                    this.registerScript(target);
-                })
-                //this.registerScript(target);
-            }, 0)
+            const parent = target.parentElement;
+            parent._script = target;
+            this.registerScript(parent);
+            // setTimeout(() =>{
+            //     getDynScript(target, () =>{
+            //         this.registerScript(target);
+            //     })
+            //     //this.registerScript(target);
+            // }, 0)
         }
     }
     defGenProp(target: HTMLElement, prop: string){
@@ -148,7 +151,12 @@ const __fn = function(input, target){
     }
     onPropsChange(){
         if(!this._connected) return;
-        this.addCSSListener(LitterG.is, '[data-lit]', this.insertListener);
+        this.addCSSListener(LitterG.is, 'script[data-lit]', this.insertListener, /* css */`
+            script{
+                display:block;
+                visibility:hidden;
+            }
+        `);
     }
 
 

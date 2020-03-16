@@ -27,12 +27,6 @@ export class LitterG extends observeCssSelector(HTMLElement) {
                 parent._script = target;
                 this.registerScript(parent);
             }, 0);
-            // setTimeout(() =>{
-            //     getDynScript(target, () =>{
-            //         this.registerScript(target);
-            //     })
-            //     //this.registerScript(target);
-            // }, 0)
         }
     }
     defGenProp(target, prop) {

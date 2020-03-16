@@ -99,7 +99,7 @@ The snippet of lit syntax contained within the script child becomes the innerHTM
                 flex-direction:row;
             }
         </style>
-        <script type="module" src="https://unpkg.com/litter-g@0.0.32/litter-g.js?module"></script>
+        <script type="module" src="https://unpkg.com/litter-g@0.0.33/litter-g.js?module"></script>
         <script type="module" src="https://unpkg.com/p-et-alia@0.0.73/p-d.js?module"></script>
     </div>
   </template>

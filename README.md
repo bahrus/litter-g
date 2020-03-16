@@ -48,7 +48,7 @@ You can also specify the input via a JSON attribute:
 
 The snippet of lit syntax contained within the script child becomes the innerHTML renderer, and it re-renders anytime the attached  _input property changes. 
 
-## [Demo](https://jsfiddle.net/bahrus/ma2y8ev0/4/)
+## [Demo](https://jsfiddle.net/bahrus/ma2y8ev0/6/)
 
 <!--
 ```

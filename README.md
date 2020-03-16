@@ -55,8 +55,8 @@ The snippet of lit syntax contained within the script child becomes the innerHTM
 <custom-element-demo>
   <template>
     <div>
-        <ul data-lit data-input='["He", "She", "They", "Ze"]'>
-                <script nomodule>
+        <ul  data-input='["He", "She", "They", "Other"]'>
+                <script nomodule data-lit>
                     html`${_input.map((i) => html`<li>${i}</li>`)}`
                 </script>
         </ul>
@@ -78,8 +78,8 @@ The snippet of lit syntax contained within the script child becomes the innerHTM
         </label>
 
         
-        <div -_latitude -_longitude data-lit>
-            <script nomodule>
+        <div -_latitude -_longitude >
+            <script nomodule data-lit>
                 tr = ({_latitude, _longitude}) => html`
                     <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
                         (${_latitude},${_longitude})
@@ -99,8 +99,8 @@ The snippet of lit syntax contained within the script child becomes the innerHTM
                 flex-direction:row;
             }
         </style>
-        <script type="module" src="https://unpkg.com/litter-g@0.0.31/litter-g.js?module"></script>
-        <script type="module" src="https://unpkg.com/p-et-alia@0.0.70/p-d.js?module"></script>
+        <script type="module" src="https://unpkg.com/litter-g@0.0.32/litter-g.js?module"></script>
+        <script type="module" src="https://unpkg.com/p-et-alia@0.0.73/p-d.js?module"></script>
     </div>
   </template>
 </custom-element-demo>

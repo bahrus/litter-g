@@ -28,10 +28,14 @@ export class LitterG extends observeCssSelector(HTMLElement){
     _connected!: boolean;
     insertListener(e: any){
         if (e.animationName === LitterG.is) {
-            const target = e.target;
-            const parent = target.parentElement;
-            parent._script = target;
-            this.registerScript(parent);
+            setTimeout(() => {
+                const target = e.target;
+                target.dataset.loaded='true';
+                const parent = target.parentElement;
+                parent._script = target;
+                this.registerScript(parent);                
+            }, 0);
+
             // setTimeout(() =>{
             //     getDynScript(target, () =>{
             //         this.registerScript(target);
@@ -152,9 +156,12 @@ const __fn = function(input, target){
     onPropsChange(){
         if(!this._connected) return;
         this.addCSSListener(LitterG.is, 'script[data-lit]', this.insertListener, /* css */`
-            script{
+            script[data-lit]{
                 display:block;
                 visibility:hidden;
+            }
+            script[data-lit][data-loaded]{
+                display:none;
             }
         `);
     }

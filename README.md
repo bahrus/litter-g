@@ -9,8 +9,6 @@
 
 # litter-g
 
-**NB:**  This component is undergoing experimental, breaking changes.
-
 ## Use Case
 
 The use case for litter-g is spelled out quite nicely by [React's introductory pages](https://reactjs.org/docs/add-react-to-a-website.html):
@@ -27,8 +25,8 @@ By referencing the litter-g library, this only affects things outside any Shadow
 
 
 ```html
-<ul data-lit>
-    <script nomodule>
+<ul>
+    <script nomodule data-lit>
         html`${_input.map((i) => html`<li>${i}</li>`)}`
     </script>
 </ul>
@@ -41,8 +39,8 @@ By referencing the litter-g library, this only affects things outside any Shadow
 You can also specify the input via a JSON attribute:
 
 ```html
-<ul data-lit data-input='["He", "She", "They", "Other"]'>
-    <script nomodule>
+<ul data-input='["He", "She", "They", "Other"]'>
+    <script nomodule data-lit>
         html`${_input.map((i) => html`<li>${i}</li>`)}`
     </script>
 </ul>
@@ -117,9 +115,9 @@ All the lit-html directives that are part of the lit-html library are available 
 It's a bit "hackish", but you can add event handlers, if you are careful to demark where the event handlers end, and the template begins, via the "magic string" //render:
 
 ```html
-<ul id="pronouns" data-lit data-input='["He", "She", "They", "Other"]'>
+<ul id="pronouns" data-input='["He", "She", "They", "Other"]'>
     <li>I am here</li>
-    <script nomodule>
+    <script nomodule data-lit>
         function clickHandler(e){
             console.log(e);
         }
@@ -135,8 +133,8 @@ Sometimes we want a ui element to depend on more than one input parameter.
 
 ```html
 ...
-<div data-lit>
-    <script nomodule>
+<div>
+    <script nomodule data-lit>
         tr = ({_latitude, _longitude}) => html`
             <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
                 (${_latitude},${_longitude})
@@ -167,9 +165,9 @@ If you wish to use litter-g inside a ShadowDOM realm, then in addition to refere
         ...
         <litter-g></litter-g>
         ...
-        <ul id="pronouns" data-lit data-input='["He", "She", "They", "Other"]'>
+        <ul id="pronouns" data-input='["He", "She", "They", "Other"]'>
             <li>I am here</li>
-            <script nomodule>
+            <script nomodule data-lit>
                 function clickHandler(e){
                     console.log(e);
                 }

@@ -6,11 +6,11 @@
   "module": "litter-g.js",
   "dependencies": {
     "xtal-element": "0.0.101",
-    "trans-render": "0.0.142",
+    "trans-render": "0.0.143",
     "lit-html": "1.1.2"
   },
   "devDependencies": {
-    "xtal-test": "0.0.41",
+    "xtal-test": "0.0.44",
     "es-module-shims": "0.4.6"
   },
   "scripts": {

@@ -5,9 +5,9 @@
   "main": "litter-g.js",
   "module": "litter-g.js",
   "dependencies": {
-    "xtal-element": "0.0.101",
-    "trans-render": "0.0.143",
-    "lit-html": "1.1.2"
+    "xtal-element": "0.0.140",
+    "trans-render": "0.0.177",
+    "lit-html": "1.2.1"
   },
   "devDependencies": {
     "xtal-test": "0.0.44",

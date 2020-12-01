@@ -190,3 +190,22 @@ $ npm run serve
 ## Running Tests
 
 $ npm run test
+
+
+## Take two:
+
+
+```html
+<litter-g></litter-g>
+<ul>
+    <li>header list item</li>
+    <script nomodule>
+        html`${input.map(i => html`<li>${i}</li>`)}`
+    </script>
+    <li>footer list item</li>
+</ul>
+...
+<script>
+    document.querySelector('litter-g').input = ["He", "She", "They", "Other"];
+</script>
+```

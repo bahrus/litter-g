@@ -11,8 +11,8 @@
     "xtal-deco": "0.0.26"
   },
   "devDependencies": {
-    "xtal-test": "0.0.44",
-    "es-module-shims": "0.4.6"
+    "xtal-test": "0.0.48",
+    "es-module-shims": "0.7.1"
   },
   "scripts": {
     "test": "node test/test-all.js",

@@ -192,11 +192,11 @@ $ npm run serve
 $ npm run test
 
 
-## Take two:
+## Take two [TODO]:
 
 
 ```html
-<litter-g></litter-g>
+<litter-g id=pronounList></litter-g>
 <ul>
     <li>header list item</li>
     <script nomodule>
@@ -206,6 +206,40 @@ $ npm run test
 </ul>
 ...
 <script>
-    document.querySelector('litter-g').input = ["He", "She", "They", "Other"];
+    pronounList.input = ["He", "She", "They", "Other"];
+</script>
+```
+
+```html
+<litter-g input='["He", "She", "They", "Other"]'></litter-g>
+<ul id="pronouns">
+    <li>I am here</li>
+    <script nomodule>
+        function clickHandler(e){
+            console.log(e);
+        }
+        //render
+        html`${_input.map((item, idx) => html`<li @click="${clickHandler}" id="li_${idx}">${item}</li>`)}`
+    </script>
+</ul>
+```
+
+```html
+...
+<litter-g id=mapCoordinates></litter-g>
+<div>
+    <script nomodule>
+        tr = ({latitude, longitude}) => html`
+            <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
+                (${latitude},${longitude})
+            </a> 
+        `
+    </script>
+</div>
+
+...
+<script>
+    mapCoordinates.latitude = 41.903878;
+    mapCoordinates.longitude = 12.452818;
 </script>
 ```

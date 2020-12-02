@@ -192,7 +192,7 @@ $ npm run serve
 $ npm run test
 
 
-## Take two [TODO]:
+## Take three [TODO]:
 
 
 ```html

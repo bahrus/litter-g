@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <litter-g2></litter-g2>
+    <ul>
+        <li>header list item</li>
+        <script nomodule>
+            html`${input.map(i => html`<li>${i}</li>`)}`
+        </script>
+        <li>footer list item</li>
+    </ul>
+    <!-- Use experimental import maps -->
+    <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
+    <script type="importmap-shim">
+    {
+        "imports": {
+            "xtal-element/": "../node_modules/xtal-element/",
+            "trans-render/": "../node_modules/trans-render/",
+            "lit-html/": "../node_modules/lit-html/",
+            "xtal-deco/": "../node_modules/xtal-deco/"
+        }
+    }
+    </script>
+    <script  type="module-shim">
+        import '../litter-g2.js';
+    </script>
+</body>
+</html>

@@ -1,5 +1,18 @@
 import { XtalDeco } from 'xtal-deco/xtal-deco.js';
 import { define } from 'trans-render/define.js';
+import { attachScriptFn } from 'xtal-element/attachScriptFn.js';
+import { destruct } from 'xtal-element/destruct.js';
+import { html, render } from 'lit-html/lit-html.js';
+import { repeat } from 'lit-html/directives/repeat.js';
+import { asyncAppend } from 'lit-html/directives/async-append.js';
+import { asyncReplace } from 'lit-html/directives/async-replace.js';
+import { cache } from 'lit-html/directives/cache.js';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { guard } from 'lit-html/directives/guard.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { until } from 'lit-html/directives/until.js';
 const input = 'input';
 const _target = '_target';
 const _renderer = '_renderer';
@@ -19,6 +32,17 @@ export class LitterG2 extends XtalDeco {
         this.actions = [];
         this.on = {};
         this._addedProps = false;
+    }
+    static get observedAttributes() {
+        return ['input'];
+    }
+    static get exports() {
+        return {
+            html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until
+        };
+    }
+    attributeChangedCallback(name, oldVal, newVal) {
+        this.input = JSON.parse(newVal);
     }
     parseMultiVariateScript(srcScript, ignore) {
         const split = srcScript.innerHTML.split('//render');
@@ -66,48 +90,24 @@ const __fn = function(input, target){
 }    
 `;
         this.addProps(scriptInfo);
-        attachScriptFn(LitterG.is, target, _renderer, text, importPaths);
+        attachScriptFn(LitterG2.is, target, _renderer, text, importPaths);
     }
     addProps(scriptInfo) {
         if (this._addedProps)
             return;
-        this.commitProps(scriptInfo.args.concat(_renderer, _input, _target), target);
-        target.dataset.addedProps = 'true';
-        if (!target._input) {
-            const inp = target.dataset.input;
-            if (inp) {
-                target._input = JSON.parse(inp);
-            }
-        }
+        scriptInfo.args.forEach(prop => {
+        });
+        this._addedProps = true;
     }
     commitProps(props, target) {
         props.forEach(prop => {
-            const initVal = target[prop];
-            //TODO:  move default case into litter-gz
-            const localSym = Symbol(prop.toString());
-            switch (prop) {
-                case _renderer:
-                case _input:
-                case _target:
-                    Object.defineProperty(target, prop, {
-                        get: function () {
-                            return this[localSym];
-                        },
-                        set: function (val) {
-                            this[localSym] = val;
-                            if (this._input && this._renderer && !this.hasAttribute('disabled'))
-                                this._renderer(this._input, this._target || target);
-                        },
-                        enumerable: true,
-                        configurable: true,
-                    });
-                    break;
-                default:
-                    this.defGenProp(target, prop);
-            }
-            if (initVal !== undefined)
-                target[prop] = initVal;
+            this.defGenProp(target, prop);
         });
+        //if(initVal !== undefined)  (<any>target)[prop] = initVal;
+        //});
+    }
+    defGenProp(target, prop) {
+        destruct(target, prop);
     }
     get input() {
         return this._input;

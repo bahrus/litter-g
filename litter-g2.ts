@@ -41,6 +41,7 @@ export class LitterG2 extends XtalDeco {
             return;
         }
         this.registerScript(scriptEl, self);
+        this.target = self;
     }
     actions = [];
     on = {};
@@ -92,7 +93,7 @@ const __fn = function(input, target){
 }    
 `;
         this.addProps(scriptInfo);
-        attachScriptFn(LitterG2.is, targetEl, _renderer, text, importPaths);
+        attachScriptFn(LitterG2.is, targetEl, (fn: any) => {this.renderer = fn}, text, importPaths);
         
     }
     _addedProps = false;

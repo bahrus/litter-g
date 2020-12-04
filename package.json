@@ -5,14 +5,14 @@
   "main": "litter-g.js",
   "module": "litter-g.js",
   "dependencies": {
-    "xtal-element": "0.0.314",
-    "trans-render": "0.0.269",
     "lit-html": "1.3.0",
-    "xtal-deco": "0.0.26"
+    "trans-render": "0.0.269",
+    "xtal-deco": "0.0.27",
+    "xtal-element": "0.0.315"
   },
   "devDependencies": {
-    "xtal-test": "0.0.48",
-    "es-module-shims": "0.7.1"
+    "es-module-shims": "0.7.1",
+    "xtal-test": "0.0.48"
   },
   "scripts": {
     "test": "node test/test-all.js",

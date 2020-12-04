@@ -106,6 +106,7 @@ const __fn = function(input, target){
     addProps(scriptInfo: IScriptInfo){
         if(this._addedProps) return;
         scriptInfo.args.forEach(prop => {
+            if(prop === 'input') return;
             destruct(this, prop, 'input');
         })
         this._addedProps = true;

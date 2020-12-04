@@ -6,42 +6,46 @@
     <title>Document</title>
 </head>
 <body>
-    <div data-input='["There was an old lady who swallowed a fly"]'>
-        <script nomodule data-lit>
-            html`${_input.map((statement) => html`<p mark>${statement}</p>`)}`
+    <litter-g input='["The best things in life are free, but you can give them to the birds and bees"]'></litter-g>
+    <div>
+        <script nomodule>
+            html`${input.map((statement) => html`<a href=https://www.youtube.com/watch?v=W25_jgiY51I><p mark>${statement}</p></a>`)}`
         </script>
     </div>
-    <div id=whyDiv data-input='["I don&apos;t know why she swallowed a fly; perhaps she&apos;ll die."]'>
+    <!-- <litter-g input='["I want money THAT&apos;S WHAT I WANT that&apos;s what I want THAT&apos;S WHAT I WANT"]'></litter-g>
+    <div id=lovin>
         <script nomodule data-lit>
             function handleClick(){
                 const el = document.createElement('p');
                 el.setAttribute('mark', '');
-                el.textContent = 'There was an old lady who swallowed a spider;'
-                whyDiv.appendChild(el);
+                el.textContent = "Your lovin' give me a thrill but your lovin' don't pay my bill."
+                lovin.appendChild(el);
             }
             //render
-            html`${_input.map((statement) => html`<p id="whyP" @click="${handleClick}"  mark>${statement}</p>`)}`
+            html`${input.map((statement) => html`<p id="love" @click="${handleClick}"  mark>${statement}</p>`)}`
         </script>
     </div>
     <script>
         setTimeout(() =>{
-            whyP.click();
+            love.click();
         }, 3000)
     </script>
 
-    <div id=wriggled>
+    <litter-g id=whatIWant></litter-g>
+    <div>
         <script nomodule data-lit>
             tr = (_s1, _s2, _s3) => html`<p ?mark="${_s1}">${_s1}</p><p ?mark="${_s2}">${_s2}</p><p ?mark="${_s3}">${_s3}</p>`
         </script>
     </div>
     <script>
         setTimeout(() =>{
-            wriggled._s1 = 'That wriggled and jiggled and tickled inside her!';
-            wriggled._s2 = 'She swallowed the spider to catch the fly;';
-            wriggled._s3 = 'I don\'t know why she swallowed a fly - Perhaps she\'ll die!';
+            whatIWant._s1 = "Now gimme money THAT'S WHAT I WANT that's what I want THAT'S WHAT I WANT";
+            whatIWant._s2 = "Money don't get everything it's true.  What it don't get I can't use.";
+            whatIWant._s3 = "I want money THAT'S WHAT I WANT";
         }, 3000)
     </script>
-    <div id=bird>
+    <litter-g id=moneyObsession></litter-g>
+    <div>
         <script nomodule data-lit>
             function handleClick2(){
                 console.log('in handleClick2');
@@ -49,25 +53,26 @@
             //render
             tr = (_s1, _s2, _s3) => html`<p id=swallowedBird ?mark="${_s1}" @click="${handleClick2}">${_s1}</p><p ?mark="${_s2}">${_s2}</p><p ?mark="${_s3}">${_s3}</p>`
         </script>
-    </div>
-    <script>
+    </div> -->
+    <!-- <script>
         setTimeout(() =>{
-            bird._s1 = 'There was an old lady who swallowed a bird; ';
-            bird._s2 = 'How absurd to swallow a bird!';
+            moneyObsession._s1 = 'Money, lots money';
+            moneyObsession._s2 = 'Whole lot of money';
             setTimeout(() =>{
-                bird._s3 = 'She swallowed the bird to catch the spider;'
+                moneyObsession._s3 = 'I need money';
             }, 1000);
         }, 1000)
         
-    </script>     
+    </script>      -->
     <!-- Use experimental import maps -->
     <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
     <script type="importmap-shim">
     {
         "imports": {
-        "xtal-element/": "../node_modules/xtal-element/",
-        "trans-render/": "../node_modules/trans-render/",
-        "lit-html/": "../node_modules/lit-html/"
+            "xtal-element/": "../node_modules/xtal-element/",
+            "trans-render/": "../node_modules/trans-render/",
+            "lit-html/": "../node_modules/lit-html/",
+            "xtal-deco/": "../node_modules/xtal-deco/"
         }
     }
     </script>

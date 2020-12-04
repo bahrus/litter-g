@@ -27,7 +27,7 @@ export class LitterG2 extends XtalDeco {
                 }, 16);
                 return;
             }
-            console.log(scriptEl);
+            this.registerScript(scriptEl, self);
         };
         this.actions = [];
         this.on = {};
@@ -72,9 +72,9 @@ export class LitterG2 extends XtalDeco {
             };
         }
     }
-    registerScript(target) {
+    registerScript(target, targetEl) {
         let importPaths = `
-const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until} = customElements.get('litter-g').exports;
+const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until} = customElements.get('litter-g2').exports;
 `;
         const importAttr = this.getAttribute('import');
         if (importAttr !== null)
@@ -90,7 +90,7 @@ const __fn = function(input, target){
 }    
 `;
         this.addProps(scriptInfo);
-        attachScriptFn(LitterG2.is, target, _renderer, text, importPaths);
+        attachScriptFn(LitterG2.is, targetEl, _renderer, text, importPaths);
     }
     addProps(scriptInfo) {
         if (this._addedProps)

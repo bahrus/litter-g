@@ -138,11 +138,12 @@ Sometimes we want a ui element to depend on more than one input parameter.
 
 ```html
 ...
+<litter-g id=mapCoordinates></litter-g>
 <div>
-    <script nomodule data-lit>
-        tr = ({_latitude, _longitude}) => html`
-            <a href="http://www.gps-coordinates.org/my-location.php?lat=${_latitude}&lng=${_longitude}" target="_blank">
-                (${_latitude},${_longitude})
+    <script nomodule>
+        tr = ({latitude, longitude}) => html`
+            <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
+                (${latitude},${longitude})
             </a> 
         `
     </script>
@@ -151,37 +152,15 @@ Sometimes we want a ui element to depend on more than one input parameter.
 
 and does the following:
 
-1)  Adds properties _latitude, _longitude to the div DOM element.   
-2)  Updates the input property any time either of those properties change (with a little debouncing), thus causing lit-html to rerender.
+1)  Dynamically adds properties latitude, longitude to the litter-g instance.   
+2)  Updates the input property any time either of those properties change (with a little debouncing [TODO](https://dev.to/thepassle/litelement-a-deepdive-into-batched-updates-3hh)), thus causing lit-html to re-render.
 
-**NB I:** The "tr = " is optional text.  This allows VSCode to provide recognize the expression.  tr stands for "template result."
 
-**NB II:** The underscores (_latitude, _longitude) are optional, but they are recommended, in order avoid any concerns about a native property being added to the Native HTML element (div in this case) with the same name.  It's difficult to imagine the W3C adding properties "latitude" and "longitude" to the div element, but just in case.  If they did, and you used latitude and longitude without prefixing, it's hard to predict what would happen.  Presumably, they wouldn't add properties beginning with an underscore, as that's a pattern never seen before.
+**NB I:** The "tr = " is optional text.  This allows VSCode to recognize the expression, and provide helpful syntax coloring, autocomplete, etc.  tr stands for "template result."
 
 You can also add event handlers just as before, separated by the //render comment.
 
-## Using inside ShadowDOM
 
-If you wish to use litter-g inside a ShadowDOM realm, then in addition to referencing litter-g.js you will need to insert an instance of the litter-g custom element, which then monitors for the ShadowDOM realm for elements with attribute data-lit.
-
-```html
-<host-element>
-    #ShadowDOM
-        ...
-        <litter-g></litter-g>
-        ...
-        <ul id="pronouns" data-input='["He", "She", "They", "Other"]'>
-            <li>I am here</li>
-            <script nomodule data-lit>
-                function clickHandler(e){
-                    console.log(e);
-                }
-                //render
-                html`${_input.map((item, idx) => html`<li @click="${clickHandler}" id="li_${idx}">${item}</li>`)}`
-            </script>
-        </ul>
-</host-element>
-```
 
 ##   [IE11 Support](https://youtu.be/YVi6ZYzD_Gc?t=275) 
 
@@ -196,51 +175,3 @@ $ npm run serve
 
 $ npm run test
 
-
-## Take three [TODO]:
-
-
-```html
-<litter-g id=pronounList></litter-g>
-<ul>
-    <script nomodule>html`${input.map(i => html`<li>${i}</li>`)}`</script>
-</ul>
-...
-<script>
-    pronounList.input = ["He", "She", "They", "Other"];
-</script>
-```
-
-```html
-<litter-g input='["He", "She", "They", "Other"]'></litter-g>
-<ul id="pronouns">
-    <li>I am here</li>
-    <script nomodule>
-        function clickHandler(e){
-            console.log(e);
-        }
-        //render
-        html`${_input.map((item, idx) => html`<li @click="${clickHandler}" id="li_${idx}">${item}</li>`)}`
-    </script>
-</ul>
-```
-
-```html
-...
-<litter-g id=mapCoordinates></litter-g>
-<div>
-    <script nomodule>
-        tr = ({latitude, longitude}) => html`
-            <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
-                (${latitude},${longitude})
-            </a> 
-        `
-    </script>
-</div>
-
-...
-<script>
-    mapCoordinates.latitude = 41.903878;
-    mapCoordinates.longitude = 12.452818;
-</script>
-```

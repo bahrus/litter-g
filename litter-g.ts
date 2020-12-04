@@ -116,9 +116,6 @@ const __fn = function(input, target){
             this.defGenProp(target, prop);
         })
 
-            //if(initVal !== undefined)  (<any>target)[prop] = initVal;
-            
-        //});
     }
 
     defGenProp(target: HTMLElement, prop: string){

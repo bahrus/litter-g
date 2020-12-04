@@ -109,8 +109,6 @@ const __fn = function(input, target){
         props.forEach(prop => {
             this.defGenProp(target, prop);
         });
-        //if(initVal !== undefined)  (<any>target)[prop] = initVal;
-        //});
     }
     defGenProp(target, prop) {
         destruct(target, prop);

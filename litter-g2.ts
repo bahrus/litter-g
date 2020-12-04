@@ -46,6 +46,11 @@ export class LitterG2 extends XtalDeco {
     actions = [];
     on = {};
 
+    connectedCallback(){
+        super.connectedCallback();
+        this.__propUp(['input']);
+    }
+
     parseMultiVariateScript(srcScript: HTMLScriptElement, ignore: string) : IScriptInfo{
         const split = srcScript.innerHTML.split('//render');
         const len = split.length;
@@ -147,7 +152,9 @@ const __fn = function(input, target){
     }
 
     render(){
-        if(this._renderer !== undefined && this._target !== undefined) this._renderer(this._input, this._target);
+        if(this._renderer !== undefined && this._target !== undefined && this._input !== undefined){
+            this._renderer(this._input, this._target);
+        } 
     }
 
 }

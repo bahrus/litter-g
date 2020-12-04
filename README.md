@@ -198,11 +198,7 @@ $ npm run test
 ```html
 <litter-g id=pronounList></litter-g>
 <ul>
-    <li>header list item</li>
-    <script nomodule>
-        html`${input.map(i => html`<li>${i}</li>`)}`
-    </script>
-    <li>footer list item</li>
+    <script nomodule>html`${input.map(i => html`<li>${i}</li>`)}`</script>
 </ul>
 ...
 <script>

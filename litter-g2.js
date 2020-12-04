@@ -45,6 +45,10 @@ export class LitterG2 extends XtalDeco {
     attributeChangedCallback(name, oldVal, newVal) {
         this.input = JSON.parse(newVal);
     }
+    connectedCallback() {
+        super.connectedCallback();
+        this.__propUp(['input']);
+    }
     parseMultiVariateScript(srcScript, ignore) {
         const split = srcScript.innerHTML.split('//render');
         const len = split.length;
@@ -132,8 +136,9 @@ const __fn = function(input, target){
         this.render();
     }
     render() {
-        if (this._renderer !== undefined && this._target !== undefined)
+        if (this._renderer !== undefined && this._target !== undefined && this._input !== undefined) {
             this._renderer(this._input, this._target);
+        }
     }
 }
 LitterG2.is = 'litter-g2';

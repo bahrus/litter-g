@@ -1,7 +1,8 @@
-import {observeCssSelector} from 'xtal-element/observeCssSelector.js';
+import {XtalDeco} from 'xtal-deco/xtal-deco.js';
 import {define} from 'trans-render/define.js';
-import {destruct} from 'xtal-element/destruct.js';
+import {IScriptInfo} from './types.js';
 import {attachScriptFn} from 'xtal-element/attachScriptFn.js';
+import {destruct} from 'xtal-element/destruct.js';
 import {html, render} from 'lit-html/lit-html.js';
 import {repeat} from 'lit-html/directives/repeat.js';
 import {asyncAppend} from 'lit-html/directives/async-append.js';
@@ -13,83 +14,44 @@ import {ifDefined} from 'lit-html/directives/if-defined.js';
 import {styleMap} from 'lit-html/directives/style-map.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 import {until} from 'lit-html/directives/until.js';
-export interface IScriptInfo{
-    args: string[],
-    render: string,
-    handlers?: string
-}
-const _input = '_input';
+
+const input = 'input';
 const _target = '_target';
 const _renderer = '_renderer';
 
-export class LitterG extends observeCssSelector(HTMLElement){
-    static get is(){return 'litter-g';}
+export class LitterG extends XtalDeco {
+    static is = 'litter-g';
     static _count = 0;
-    _connected!: boolean;
-    insertListener(e: any){
-        if (e.animationName === LitterG.is) {
-            setTimeout(() => {
-                const target = e.target;
-                target.dataset.loaded='true';
-                const parent = target.parentElement;
-                parent._script = target;
-                this.registerScript(parent);                
-            }, 0);
-
-
-        }
+    static get observedAttributes(){
+        return ['input'];
     }
-    defGenProp(target: HTMLElement, prop: string){
-        destruct(target, prop);
-    }
-
-    commitProps(props: string[], target: HTMLElement){
-        props.forEach(prop =>{
-            const initVal = (<any>target)[prop];
-            //TODO:  move default case into litter-gz
-            const localSym = Symbol(prop.toString());
-            switch(prop){
-                case _renderer:
-                case _input:
-                case _target:
-                    Object.defineProperty(target, prop, {
-                        get: function () {
-                            return this[localSym];
-                        },
-                        set: function (val) {
-                            this[localSym] = val;
-                            if(this._input && this._renderer && !this.hasAttribute('disabled')) this._renderer(this._input, this._target || target);
-                        },
-                        enumerable: true,
-                        configurable: true,
-                    });
-                    break;
-                default:
-                    this.defGenProp(target, prop);
-            }
-
-            if(initVal !== undefined)  (<any>target)[prop] = initVal;
-            
-        });
-    }
-    addProps(target: any, scriptInfo: IScriptInfo){
-        if(target.dataset.addedProps) return;
-        this.commitProps(scriptInfo.args.concat(_renderer, _input, _target), target);
-        target.dataset.addedProps = 'true';
-        if(!target._input){
-            const inp = target.dataset.input;
-            if(inp){
-                target._input = JSON.parse(inp);
-            }
-        }
-
-    }
-
     static get exports(){
         return {
             html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until 
         }; 
     } 
+    attributeChangedCallback(name: string, oldVal: string, newVal: string){
+        this.input = JSON.parse(newVal);
+    }
+    init = ({self} : any) => {
+        const scriptEl = self.querySelector('script');
+        if(scriptEl == null){
+            setTimeout(() => {
+                this.init(self);
+            }, 16);
+            return;
+        }
+        this.registerScript(scriptEl, self);
+        this.target = self;
+    }
+    actions = [];
+    on = {};
+
+    connectedCallback(){
+        super.connectedCallback();
+        this.__propUp(['input']);
+    }
+
     parseMultiVariateScript(srcScript: HTMLScriptElement, ignore: string) : IScriptInfo{
         const split = srcScript.innerHTML.split('//render');
         const len = split.length;
@@ -112,7 +74,7 @@ export class LitterG extends observeCssSelector(HTMLElement){
         }else{
             //Not multivariate
             return {
-                args: [_input],
+                args: [input],
                 render: split[split.length - 1],
                 handlers: split.length > 1 ? split[0] : ''
             };
@@ -120,17 +82,15 @@ export class LitterG extends observeCssSelector(HTMLElement){
         
     }
 
-
-
-    registerScript(target: HTMLElement){
+    registerScript(target: HTMLScriptElement, targetEl: any){
         let importPaths = `
 const {html, render, repeat, asyncAppend, asyncReplace, cache, classMap, guard, ifDefined, styleMap, unsafeHTML, until} = customElements.get('litter-g').exports;
 `;
         const importAttr = this.getAttribute('import');
         if(importAttr !== null) importPaths = (<any>self)[importAttr];
         const count = LitterG._count++;
-        const scriptInfo = this.parseMultiVariateScript((<any>target)._script, 'tr = ');
-        const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : _input;
+        const scriptInfo = this.parseMultiVariateScript(target, 'tr = ');
+        const args = scriptInfo.args.length > 1 ?  '{' + scriptInfo.args.join(',') + '}' : input;
         const text = /* js */`
 ${scriptInfo.handlers}
 const litter = (${args}) => ${scriptInfo.render};
@@ -138,30 +98,65 @@ const __fn = function(input, target){
     render(litter(input), target);
 }    
 `;
-        this.addProps(target, scriptInfo);
-        attachScriptFn(LitterG.is, target, _renderer, text, importPaths);
+        this.addProps(scriptInfo);
+        attachScriptFn(LitterG.is, targetEl, (fn: any) => {this.renderer = fn}, text, importPaths);
         
     }
-    
-    connectedCallback(){
-        this.style.display = 'none';
-        this._connected = true;
-        this.onPropsChange();
-    }
-    onPropsChange(){
-        if(!this._connected) return;
-        this.addCSSListener(LitterG.is, 'script[data-lit]', this.insertListener, /* css */`
-            script[data-lit]{
-                display:block;
-                visibility:hidden;
-            }
-            script[data-lit][data-loaded]{
-                display:none;
-            }
-        `);
+    _addedProps = false;
+    addProps(scriptInfo: IScriptInfo){
+        if(this._addedProps) return;
+        scriptInfo.args.forEach(prop => {
+            destruct(this, prop, 'input');
+        })
+        this._addedProps = true;
     }
 
+    commitProps(props: string[], target: HTMLElement){
+        props.forEach(prop =>{
+            this.defGenProp(target, prop);
+        })
+
+            //if(initVal !== undefined)  (<any>target)[prop] = initVal;
+            
+        //});
+    }
+
+    defGenProp(target: HTMLElement, prop: string){
+        destruct(target, prop);
+    }
+
+    _input: any;
+    get input(){
+        return this._input;
+    }
+    set input(val: any){
+        this._input = val;
+        this.render();
+    }
+
+    _target: Element | undefined;
+    get target(){
+        return this._target;
+    }
+    set target(val: Element | undefined){
+        this._target = val;
+        this.render();
+    }
+
+    _renderer: ((input: any, target: Element) => void) | undefined;
+    get renderer(){
+        return this._renderer;
+    }
+    set renderer(val: ((input: any, target: Element) => void) | undefined){
+        this._renderer = val;
+        this.render();
+    }
+
+    render(){
+        if(this._renderer !== undefined && this._target !== undefined && this._input !== undefined){
+            this._renderer(this._input, this._target);
+        } 
+    }
 
 }
 define(LitterG);
-document.body.appendChild(document.createElement(LitterG.is));

@@ -6,23 +6,49 @@
     <title>Document</title>
 </head>
 <body>
-    <litter-g2 input='["He", "She", "They", "Other"]'></litter-g2>
+    <!-- <litter-g input='["He", "She", "They", "Other"]'></litter-g>
     <ul>
-        <li>header list item</li>
         <script nomodule>
             html`${input.map(i => html`<li>${i}</li>`)}`
         </script>
-        <li>footer list item</li>
     </ul>
 
 
-    <litter-g2 id=pronounList></litter-g2>
+    <litter-g id=pronounList></litter-g>
     <ul>
         <script nomodule>html`${input.map(i => html`<li>${i}</li>`)}`</script>
     </ul>
     ...
     <script>
         pronounList.input = ["He", "She", "They", "Other"];
+    </script>
+
+    <litter-g input='["He", "She", "They", "Other"]'></litter-g>
+    <ul id="pronouns">
+        <script nomodule>
+            function clickHandler(e){
+                console.log(e);
+            }
+            //render
+            html`${input.map((item, idx) => html`<li @click="${clickHandler}" id="li_${idx}">${item}</li>`)}`
+        </script>
+    </ul> -->
+
+    <litter-g id=mapCoordinates></litter-g>
+    <div>
+        <script nomodule>
+            tr = ({latitude, longitude}) => html`
+                <a href="http://www.gps-coordinates.org/my-location.php?lat=${latitude}&lng=${longitude}" target="_blank">
+                    (${latitude},${longitude})
+                </a> 
+            `
+        </script>
+    </div>
+
+    ...
+    <script>
+        mapCoordinates.latitude = 41.903878;
+        mapCoordinates.longitude = 12.452818;
     </script>
 
     <!-- Use experimental import maps -->
@@ -38,7 +64,7 @@
     }
     </script>
     <script  type="module-shim">
-        import '../litter-g2.js';
+        import '../litter-g.js';
     </script>
 </body>
 </html>

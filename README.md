@@ -21,32 +21,36 @@ Note:  litter-g hopes to improve on the ergonomics of a similar component, [xtal
 
 ## Syntax
 
-By referencing the litter-g library, this only affects things outside any ShadowDOM.  The attribute "data-lit" is the magic attribute that causes the DOM element to become a target for lit-html:
+The litter-g element applies its services onto the next sibling element:
 
 
 ```html
+<litter-g id=pronounList></litter-g>
 <ul>
-    <script nomodule data-lit>
-        html`${_input.map((i) => html`<li>${i}</li>`)}`
-    </script>
+    <script nomodule>html`${input.map(i => html`<li>${i}</li>`)}`</script>
 </ul>
 ...
 <script>
-        document.querySelector('[data-lit]')._input = ["He", "She", "They", "Other"];
+    pronounList.input = ["He", "She", "They", "Other"];
 </script>
 ```
+
+Here, we are relying on the fact that giving a DOM element an id ("pronounList"), that id becomes a global constant, if the DOM element is outside ShadowDOM.
 
 You can also specify the input via a JSON attribute:
 
 ```html
-<ul data-input='["He", "She", "They", "Other"]'>
-    <script nomodule data-lit>
-        html`${_input.map((i) => html`<li>${i}</li>`)}`
+<litter-g input='["He", "She", "They", "Other"]'></litter-g>
+<ul>
+    <script nomodule>
+        html`${input.map(i => html`<li>${i}</li>`)}`
     </script>
 </ul>
 ```
 
-The snippet of lit syntax contained within the script child becomes the innerHTML renderer, and it re-renders anytime the attached  _input property changes. 
+The snippet of lit syntax contained within the script child becomes the innerHTML renderer, and it re-renders anytime the input property changes. 
+
+
 
 ## [Demo](https://jsfiddle.net/bahrus/ma2y8ev0/6/)
 
@@ -106,6 +110,7 @@ The snippet of lit syntax contained within the script child becomes the innerHTM
 </custom-element-demo>
 ```
 -->
+
 ## Directives
 
 All the lit-html directives that are part of the lit-html library are available for use.
@@ -115,14 +120,14 @@ All the lit-html directives that are part of the lit-html library are available 
 It's a bit "hackish", but you can add event handlers, if you are careful to demark where the event handlers end, and the template begins, via the "magic string" //render:
 
 ```html
-<ul id="pronouns" data-input='["He", "She", "They", "Other"]'>
-    <li>I am here</li>
-    <script nomodule data-lit>
+<litter-g input='["He", "She", "They", "Other"]'></litter-g>
+<ul id="pronouns">
+    <script nomodule>
         function clickHandler(e){
             console.log(e);
         }
         //render
-        html`${_input.map((item, idx) => html`<li @click="${clickHandler}" id="li_${idx}">${item}</li>`)}`
+        html`${input.map((item, idx) => html`<li @click="${clickHandler}" id="li_${idx}">${item}</li>`)}`
     </script>
 </ul>
 ```
